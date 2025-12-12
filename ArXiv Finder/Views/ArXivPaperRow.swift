@@ -95,6 +95,11 @@ struct ArXivPaperRow: View {
                                     .foregroundColor(.blue)
                                     .cornerRadius(6)
                             }
+                            
+                            // Citation Count
+                            Text("\(paper.citationCount) citations")
+                                .font(.system(size: fontSize - 5))
+                                .foregroundColor(.gray)
                         }
                     }
                 }
