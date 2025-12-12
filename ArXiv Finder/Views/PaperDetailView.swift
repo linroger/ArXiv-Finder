@@ -93,18 +93,20 @@ struct PaperDetailView: View {
                 
                 // Paper categories
                 if !paper.categories.isEmpty {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Categories")
-                            .font(.headline)
-                        
-                        Text(paper.categories)
-                            .font(.subheadline)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
-                            .background(Color.blue.opacity(0.1))
-                            .foregroundColor(.blue)
-                            .cornerRadius(8)
-                    }
+                        if !paper.categories.isEmpty {
+                            let categories = paper.categories.split(separator: " ").map(String.init)
+                            HStack(spacing: 8) {
+                                ForEach(categories, id: \.self) { category in
+                                    Text(category)
+                                        .font(.subheadline)
+                                        .padding(.horizontal, 12)
+                                        .padding(.vertical, 6)
+                                        .background(Color.blue.opacity(0.1))
+                                        .foregroundColor(.blue)
+                                        .cornerRadius(8)
+                                }
+                            }
+                        }
                     
                     Divider()
                 }
