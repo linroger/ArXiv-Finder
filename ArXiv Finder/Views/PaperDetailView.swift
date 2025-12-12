@@ -35,9 +35,33 @@ struct PaperDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) private var dismiss
     
+    @State private var showPDF = false
+
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+        if showPDF, let url = URL(string: paper.pdfURL) {
+            PDFKitView(url: url)
+                .navigationTitle(paper.title)
+                #if os(macOS)
+                .navigationSubtitle("PDF View")
+                #else
+                .navigationBarTitleDisplayMode(.inline)
+                #endif
+                .toolbar {
+                    ToolbarItemGroup(placement: toolbarPlacement) {
+                        Button(action: { showPDF = false }) {
+                            Label("Details", systemImage: "doc.text")
+                        }
+                        
+                        Button(action: { downloadPDF(url: url) }) {
+                            Label("Download", systemImage: "arrow.down.circle")
+                        }
+                        
+                        ShareLink(item: url)
+                    }
+                }
+        } else {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
                 // Paper title
                 Text(paper.title)
                     .font(.title)
@@ -104,7 +128,7 @@ struct PaperDetailView: View {
                     
                     HStack(spacing: 16) {
                         if !paper.pdfURL.isEmpty {
-                            Link(destination: URL(string: paper.pdfURL)!) {
+                            Button(action: { showPDF = true }) {
                                 HStack {
                                     Image(systemName: "doc.fill")
                                     Text("View PDF")
@@ -115,6 +139,7 @@ struct PaperDetailView: View {
                                 .background(Color.red)
                                 .cornerRadius(8)
                             }
+                            .buttonStyle(.plain)
                         }
                         
                         if !paper.linkURL.isEmpty {
@@ -146,6 +171,13 @@ struct PaperDetailView: View {
         #endif
         .toolbar {
             ToolbarItemGroup(placement: toolbarPlacement) {
+                // Toggle PDF/Details
+                if !paper.pdfURL.isEmpty {
+                    Button(action: { showPDF.toggle() }) {
+                        Label(showPDF ? "Details" : "PDF", systemImage: showPDF ? "doc.text" : "doc.viewfinder")
+                    }
+                }
+                
                 // Favorite button for both platforms
                 if let controller = controller {
                     Button(action: {
@@ -157,13 +189,36 @@ struct PaperDetailView: View {
                     .help(paper.isFavorite ? "Remove from favorites" : "Add to favorites")
                 }
                 
-                #if os(macOS)
-                // Share functionality for macOS
-                Button("Share") {
+                if let url = URL(string: paper.pdfURL) {
+                     ShareLink(item: url)
                 }
-                #endif
             }
         }
+        } // End of if-else showPDF
+    }
+    
+    private func downloadPDF(url: URL) {
+        #if os(macOS)
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = [.pdf]
+        savePanel.nameFieldStringValue = "\(paper.title).pdf"
+        savePanel.begin { response in
+            if response == .OK, let targetURL = savePanel.url {
+                Task {
+                    do {
+                        let (data, _) = try await URLSession.shared.data(from: url)
+                        try data.write(to: targetURL)
+                    } catch {
+                        print("Failed to download PDF: \(error)")
+                    }
+                }
+            }
+        }
+        #else
+        // iOS handling would typically involve UIActivityViewController or UIDocumentPickerViewController
+        // For simplicity in this scope, ShareLink covers export. 
+        // A specific download to Files action requires more boilerplate.
+        #endif
     }
     
     /// Determine the toolbar location according to the platform

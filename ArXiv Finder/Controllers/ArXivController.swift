@@ -15,11 +15,23 @@ import UserNotifications
 @MainActor
 final class ArXivController: ObservableObject {
     
+    // MARK: - Enums
+    enum SortOption: String, CaseIterable, Identifiable {
+        case date = "Date"
+        case title = "Title"
+        case citations = "Citations"
+        
+        var id: String { self.rawValue }
+    }
+
     // MARK: - Properties
     /// Model context for SwiftData
     var modelContext: ModelContext?
     
     // MARK: - Published Properties
+    /// Current sort option
+    @Published var currentSortOption: SortOption = .date
+
     /// Papers from the "Latest" category
     @Published var latestPapers: [ArXivPaper] = []
     
@@ -104,35 +116,56 @@ final class ArXivController: ObservableObject {
     }
     
     // MARK: - Computed Properties
-    /// Papers filtered by current category
+    /// Papers filtered by current category and sorted
     var filteredPapers: [ArXivPaper] {
+        let papers: [ArXivPaper]
+        
         switch currentCategory {
         case "search":
-            return searchResults
+            papers = searchResults
         case "cs":
-            return csPapers
+            papers = csPapers
         case "math":
-            return mathPapers
+            papers = mathPapers
         case "physics":
-            return physicsPapers
+            papers = physicsPapers
         case "q-bio":
-            return quantitativeBiologyPapers
+            papers = quantitativeBiologyPapers
         case "q-fin":
-            return quantitativeFinancePapers
+            papers = quantitativeFinancePapers
         case "stat":
-            return statisticsPapers
+            papers = statisticsPapers
         case "eess":
-            return electricalEngineeringPapers
+            papers = electricalEngineeringPapers
         case "econ":
-            return economicsPapers
+            papers = economicsPapers
         case "favorites":
-            return favoritePapers
+            papers = favoritePapers
         default:
-            return latestPapers
+            papers = latestPapers
+        }
+        
+        return sortPapers(papers)
+    }
+    
+    /// Sorts the papers based on the current sort option
+    private func sortPapers(_ papers: [ArXivPaper]) -> [ArXivPaper] {
+        switch currentSortOption {
+        case .date:
+            return papers.sorted { $0.publishedDate > $1.publishedDate }
+        case .title:
+            return papers.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
+        case .citations:
+            return papers.sorted { $0.citationCount > $1.citationCount }
         }
     }
     
     // MARK: - Public Methods
+    
+    /// Changes the sort option
+    func changeSortOption(to option: SortOption) {
+        currentSortOption = option
+    }
     
     /// Loads the latest papers published on ArXiv
     /// Updates the `latestPapers` property with the results

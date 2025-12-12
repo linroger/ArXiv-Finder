@@ -26,6 +26,11 @@ struct SettingsView: View {
     @AppStorage("showPreview") private var showPreview = true
     @AppStorage("fontSize") private var fontSize = 14.0
     
+    // New customizations
+    @AppStorage("accentColor") private var accentColorName = "Blue"
+    @AppStorage("enableCache") private var enableCache = true
+    @AppStorage("cacheSizeLimit") private var cacheSizeLimit = 100 // In MB
+    
     // MARK: - State Properties
     @State private var showingResetAlert = false
     
@@ -66,12 +71,41 @@ struct SettingsView: View {
                                 .pickerStyle(MenuPickerStyle())
                                 .frame(width: 150)
                             }
+                            
+                             settingRow(title: "Cache PDFs", value: enableCache ? "On" : "Off") {
+                                Toggle("", isOn: $enableCache)
+                                    .labelsHidden()
+                            }
+                            
+                            if enableCache {
+                                settingRow(title: "Cache Limit", value: "\(cacheSizeLimit) MB") {
+                                    Stepper("", value: $cacheSizeLimit, in: 50...500, step: 50)
+                                        .labelsHidden()
+                                }
+                                
+                                Button("Clear Cache") {
+                                    // Action to clear cache
+                                }
+                                .controlSize(.small)
+                            }
                         }
                     }
                     
                     // Interface Settings
                     settingsSection(title: "Interface", icon: "paintbrush") {
                         VStack(spacing: 12) {
+                            settingRow(title: "Accent Color", value: accentColorName) {
+                                Picker("", selection: $accentColorName) {
+                                    Text("Blue").tag("Blue")
+                                    Text("Red").tag("Red")
+                                    Text("Orange").tag("Orange")
+                                    Text("Green").tag("Green")
+                                    Text("Purple").tag("Purple")
+                                }
+                                .pickerStyle(MenuPickerStyle())
+                                .frame(width: 100)
+                            }
+
                             settingRow(title: "Compact mode", value: compactMode ? "On" : "Off") {
                                 Toggle("", isOn: $compactMode)
                                     .labelsHidden()

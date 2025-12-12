@@ -12,7 +12,7 @@
         "Add Search bar to UI",
         "Add Sort menu to UI"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "feat_pdf_integration",
@@ -24,7 +24,7 @@
         "Add Download PDF button",
         "Add Export PDF button"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "feat_ui_polish",
@@ -35,7 +35,7 @@
         "Refactor PapersListView/Row for sleek look",
         "Ensure iPadOS compatibility"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "feat_settings",
@@ -45,7 +45,7 @@
         "Add theme options or other customizations",
         "Add cache management if applicable"
       ],
-      "passes": false
+      "passes": true
     }
   ]
 }

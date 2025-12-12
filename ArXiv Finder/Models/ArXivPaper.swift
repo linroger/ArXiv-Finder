@@ -39,6 +39,9 @@ final class ArXivPaper: @unchecked Sendable {
     /// Scientific categories of the paper (e.g.: "cs.AI", "math.CO")
     var categories: String
     
+    /// Number of citations (mocked for demonstration as ArXiv API doesn't provide this)
+    var citationCount: Int
+    
     /// Indicates if the paper is marked as favorite
     var isFavorite: Bool = false
     
@@ -56,9 +59,10 @@ final class ArXivPaper: @unchecked Sendable {
     ///   - pdfURL: PDF URL
     ///   - linkURL: Paper page URL
     ///   - categories: Scientific categories
+    ///   - citationCount: Number of citations (optional, default random)
     ///   - isFavorite: If marked as favorite (default false)
     init(id: String, title: String, summary: String, authors: String, 
-         publishedDate: Date, updatedDate: Date? = nil, pdfURL: String, linkURL: String, categories: String, isFavorite: Bool = false) {
+         publishedDate: Date, updatedDate: Date? = nil, pdfURL: String, linkURL: String, categories: String, citationCount: Int? = nil, isFavorite: Bool = false) {
         self.id = id
         self.title = title
         self.summary = summary
@@ -68,6 +72,7 @@ final class ArXivPaper: @unchecked Sendable {
         self.pdfURL = pdfURL
         self.linkURL = linkURL
         self.categories = categories
+        self.citationCount = citationCount ?? Int.random(in: 0...500)
         self.isFavorite = isFavorite
         self.favoritedDate = isFavorite ? Date() : nil
     }

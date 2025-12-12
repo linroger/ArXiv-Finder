@@ -87,6 +87,8 @@ struct PapersListView: View {
         self._selectedPaper = selectedPaper
     }
     
+    @State private var searchText = ""
+    
     var body: some View {
         VStack {
             if isLoading {
@@ -195,6 +197,12 @@ struct PapersListView: View {
                 #endif
             }
         }
+        .searchable(text: $searchText, prompt: "Search ArXiv papers...")
+        .onSubmit(of: .search) {
+            Task {
+                await controller?.searchPapers(query: searchText)
+            }
+        }
         .onAppear {
             // Automatically reload when returning to the main view
             if shouldRefreshOnAppear && !papers.isEmpty {
@@ -223,6 +231,19 @@ struct PapersListView: View {
                     }
                 }
                 
+                Menu {
+                    Picker("Sort By", selection: Binding(
+                        get: { controller?.currentSortOption ?? .date },
+                        set: { controller?.changeSortOption(to: $0) }
+                    )) {
+                        ForEach(ArXivController.SortOption.allCases) { option in
+                            Text(option.rawValue).tag(option)
+                        }
+                    }
+                } label: {
+                    Label("Sort", systemImage: "arrow.up.arrow.down")
+                }
+
                 #if os(iOS)
                 Menu("Categories") {
                     Button("Latest Papers") {

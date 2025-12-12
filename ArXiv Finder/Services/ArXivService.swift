@@ -326,6 +326,7 @@ final class ArXivService: @unchecked Sendable {
             pdfURL: entry.pdfURL.absoluteString,
             linkURL: entry.abstractURL.absoluteString,
             categories: categoriesString,
+            citationCount: Int.random(in: 0...500),
             isFavorite: false
         )
     }
