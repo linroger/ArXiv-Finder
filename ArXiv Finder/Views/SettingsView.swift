@@ -297,6 +297,11 @@ struct SettingsView: View {
     @AppStorage("showPreview") private var showPreview = true
     @AppStorage("fontSize") private var fontSize = 14.0
     
+    // New customizations
+    @AppStorage("accentColor") private var accentColorName = "Blue"
+    @AppStorage("enableCache") private var enableCache = true
+    @AppStorage("cacheSizeLimit") private var cacheSizeLimit = 100 // In MB
+    
     // MARK: - State Properties
     @State private var isTestingConnection = false
     @State private var connectionTestResult = ""
@@ -333,6 +338,23 @@ struct SettingsView: View {
                         }
                         .pickerStyle(MenuPickerStyle())
                     }
+                    
+                    Toggle("Cache PDFs", isOn: $enableCache)
+                    
+                    if enableCache {
+                        HStack {
+                            Text("Cache Limit")
+                            Spacer()
+                            Stepper(value: $cacheSizeLimit, in: 50...500, step: 50) {
+                                Text("\(cacheSizeLimit) MB")
+                            }
+                        }
+                        
+                        Button("Clear Cache") {
+                            // Action to clear cache
+                        }
+                        .foregroundColor(.red)
+                    }
                 }
                 
                 // Update Settings Section
@@ -357,6 +379,19 @@ struct SettingsView: View {
                 
                 // Interface Settings Section
                 Section("Interface") {
+                    HStack {
+                        Text("Accent Color")
+                        Spacer()
+                        Picker("Accent Color", selection: $accentColorName) {
+                            Text("Blue").tag("Blue")
+                            Text("Red").tag("Red")
+                            Text("Orange").tag("Orange")
+                            Text("Green").tag("Green")
+                            Text("Purple").tag("Purple")
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                    }
+
                     Toggle("Compact mode", isOn: $compactMode)
                     Toggle("Show preview", isOn: $showPreview)
                     
