@@ -49,6 +49,20 @@ import SwiftData
 /// - Specific window configuration (macOS: size, style; iOS: basic group)
 @main
 struct ArXiv_Finder: App {
+    /// Observe the accent color setting to apply it globally
+    @AppStorage("accentColor") private var accentColorName = "Blue"
+    
+    /// Convert the stored string name to a SwiftUI Color
+    private var accentColor: Color {
+        switch accentColorName {
+        case "Red": return .red
+        case "Orange": return .orange
+        case "Green": return .green
+        case "Purple": return .purple
+        default: return .blue
+        }
+    }
+
     /// Shared model container that manages application persistence
     /// Configured with SwiftData to handle local storage of ArXiv papers
     var sharedModelContainer: ModelContainer = {
@@ -105,6 +119,7 @@ struct ArXiv_Finder: App {
         WindowGroup {
             MainView()
                 .frame(minWidth: 1500, minHeight: 700)
+                .tint(accentColor)
         }
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified)
@@ -116,11 +131,13 @@ struct ArXiv_Finder: App {
         // Additional configuration for macOS
         Settings {
             SettingsView()
+                .tint(accentColor)
         }
         #else
         // iOS-specific configuration
         WindowGroup {
             MainView()
+                .tint(accentColor)
         }
         // Inject the shared model container into the SwiftUI environment
         // This allows all views to access persistent data
