@@ -92,7 +92,7 @@ struct PaperDetailView: View {
                     
                     // Paper categories
                     if !paper.categories.isEmpty {
-                            let categories = paper.categories.split(separator: " ").map(String.init)
+                            let categories = paper.categories.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) }
                             HStack(spacing: 8) {
                                 ForEach(categories, id: \.self) { category in
                                     Text(category)

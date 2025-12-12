@@ -84,7 +84,7 @@ struct ArXivPaperRow: View {
                     
                     // Article categories
                     if !compactMode && !paper.categories.isEmpty {
-                        let categories = paper.categories.split(separator: " ").map(String.init)
+                        let categories = paper.categories.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) }
                         HStack(spacing: 4) {
                             ForEach(categories.prefix(2), id: \.self) { category in
                                 Text(category)
