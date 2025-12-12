@@ -1,0 +1,213 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project "ArXiv Finder.xcodeproj" -scheme "ArXiv Finder" -destination platform=macOS,arch=arm64 build
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  ArxivKit: https://github.com/ivicamil/ArxivKit.git @ 2.1.0
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+note: Writing build operation event stream to file: /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/XCBuildData/events/5D53D91D-345D-48A2-BB4A-3E9B52FE4A2A.txt
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (4 targets)
+    Target 'ArXiv Finder' in project 'ArXiv Finder'
+        ➜ Explicit dependency on target 'ArxivKit' in project 'ArxivKit'
+    Target 'ArxivKit' in project 'ArxivKit'
+        ➜ Explicit dependency on target 'ArxivKit' in project 'ArxivKit'
+        ➜ Explicit dependency on target 'ArxivKit_ArxivKit' in project 'ArxivKit'
+    Target 'ArxivKit' in project 'ArxivKit'
+        ➜ Explicit dependency on target 'ArxivKit_ArxivKit' in project 'ArxivKit'
+    Target 'ArxivKit_ArxivKit' in project 'ArxivKit' (no dependencies)
+
+GatherProvisioningInputs
+Received inputs for target <ConfiguredTarget target: ArxivKit:PACKAGE-TARGET:ArxivKit parameters: SDKROOT:macosx-SDK_VARIANT:macos>: ProvisioningTaskInputs(identityHash: nil, identitySerialNumber: nil, identityName: nil, profileName: nil, profileUUID: nil, profilePath: nil, designatedRequirements: nil, signedEntitlements: PLDict<[:]>, simulatedEntitlements: PLDict<[:]>, appIdentifierPrefix: nil, teamIdentifierPrefix: nil, isEnterpriseTeam: Optional(false), useSigningTool: Optional(false), signingToolKeyPath: nil, signingToolKeyID: nil, signingToolKeyIssuerID: nil, keychainPath: nil, errors: [], warnings: [])
+Received inputs for target <ConfiguredTarget target: ArxivKit:PACKAGE-PRODUCT:ArxivKit parameters: SDKROOT:macosx-SDK_VARIANT:macos>: ProvisioningTaskInputs(identityHash: nil, identitySerialNumber: nil, identityName: nil, profileName: nil, profileUUID: nil, profilePath: nil, designatedRequirements: nil, signedEntitlements: PLDict<[:]>, simulatedEntitlements: PLDict<[:]>, appIdentifierPrefix: nil, teamIdentifierPrefix: nil, isEnterpriseTeam: Optional(false), useSigningTool: Optional(false), signingToolKeyPath: nil, signingToolKeyID: nil, signingToolKeyIssuerID: nil, keychainPath: nil, errors: [], warnings: [])
+Received inputs for target <ConfiguredTarget target: ArxivKit_ArxivKit:PACKAGE-RESOURCE:ArxivKit parameters: SDKROOT:macosx-SDK_VARIANT:macos>: ProvisioningTaskInputs(identityHash: nil, identitySerialNumber: nil, identityName: nil, profileName: nil, profileUUID: nil, profilePath: nil, designatedRequirements: nil, signedEntitlements: PLDict<[:]>, simulatedEntitlements: PLDict<[:]>, appIdentifierPrefix: nil, teamIdentifierPrefix: nil, isEnterpriseTeam: Optional(false), useSigningTool: nil, signingToolKeyPath: nil, signingToolKeyID: nil, signingToolKeyIssuerID: nil, keychainPath: nil, errors: [], warnings: [])
+Received inputs for target <ConfiguredTarget target: ArXiv Finder:5ecd1e6e5bc7740f96419504df16110e03300274b138f8e32d16744b504d22ef>: ProvisioningTaskInputs(identityHash: Optional("78534EA7E1C52C11688B14ADF6EFD7D0F078E23C"), identitySerialNumber: Optional("B4C72D1CFE20B60B1C481E514AB6D76"), identityName: Optional("Apple Development: linroger022@gmail.com (6CHCQ5LN9Z)"), profileName: nil, profileUUID: nil, profilePath: nil, designatedRequirements: nil, signedEntitlements: PLDict<["com.apple.security.get-task-allow": true]>, simulatedEntitlements: PLDict<[:]>, appIdentifierPrefix: Optional("X8AD8YC886."), teamIdentifierPrefix: Optional("X8AD8YC886."), isEnterpriseTeam: Optional(false), useSigningTool: Optional(false), signingToolKeyPath: nil, signingToolKeyID: nil, signingToolKeyIssuerID: nil, keychainPath: nil, errors: [], warnings: [])
+
+note: Build description signature is e3972dab93ace8367c7d7daf45a04d71
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.1.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+ReadFileContents /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/docc/features.json
+
+Build description signature: e3972dab93ace8367c7d7daf45a04d71
+Build description path: /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/XCBuildData/e3972dab93ace8367c7d7daf45a04d71.xcbuilddata
+note: Using build service at: /Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/MacOS/SWBBuildService (PID 41895)
+note: SWBBuildService loaded plugin at /Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBAndroidPlatformPlugin.bundle
+note: SWBBuildService loaded plugin at /Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBWindowsPlatformPlugin.bundle
+note: SWBBuildService loaded plugin at /Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBWebAssemblyPlatformPlugin.bundle
+note: SWBBuildService loaded plugin at /Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBUniversalPlatformPlugin.bundle
+note: SWBBuildService loaded plugin at /Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBGenericUnixPlatformPlugin.bundle
+note: SWBBuildService loaded plugin at /Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBApplePlatformPlugin.bundle
+note: SWBBuildService loaded plugin at /Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBQNXPlatformPlugin.bundle
+note: File system mode: device-agnostic
+note: Applying overriding build settings
+    ACTION=build
+    CLANG_COVERAGE_MAPPING=YES
+    CLANG_PROFILE_DATA_DIRECTORY=/Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/ProfileData
+    ENABLE_PREVIEWS=NO
+    ENABLE_XOJIT_PREVIEWS=YES
+    ONLY_ACTIVE_ARCH=YES
+    TOOLCHAINS=com.apple.dt.toolchain.Metal.32023 $(inherited)
+note: build debugging is enabled, prior trace: '/Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/XCBuildData/buildDebugging-1765503904.037422/prior-build.trace'
+note: build debugging is enabled, prior database: '/Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/XCBuildData/buildDebugging-1765503904.037422/prior-build.db'
+note: build debugging is enabled, swiftbuilddata: '/Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/XCBuildData/buildDebugging-1765503904.037422/current-manifest.swiftbuilddata'
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.1.sdk /Users/rogerlin/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/macosx26.1-25B74-3885c01c3e6b6a337905948deab2002e3ae1261907bdadc328169391a47051a6.sdkstatcache
+    cd /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv\ Finder.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.1.sdk -o /Users/rogerlin/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/macosx26.1-25B74-3885c01c3e6b6a337905948deab2002e3ae1261907bdadc328169391a47051a6.sdkstatcache
+
+    Task input dependencies:
+
+    Task output dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/macosx26.1-25B74-3885c01c3e6b6a337905948deab2002e3ae1261907bdadc328169391a47051a6.sdkstatcache
+
+ProcessProductPackaging "" /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv\ Finder.build/Debug/ArXiv\ Finder.build/ArXiv\ Finder.app.xcent (in target 'ArXiv Finder' from project 'ArXiv Finder')
+    cd /Users/rogerlin/XCode-Projects/ArXiv-Finder
+    
+    Entitlements:
+    
+    {
+    "com.apple.security.get-task-allow" = 1;
+}
+    
+    builtin-productPackagingUtility -entitlements -format xml -o /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv\ Finder.build/Debug/ArXiv\ Finder.build/ArXiv\ Finder.app.xcent
+
+    Task input dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv Finder.build/Debug/ArXiv Finder.build/DerivedSources/Entitlements.plist
+
+    Task output dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv Finder.build/Debug/ArXiv Finder.build/ArXiv Finder.app.xcent
+
+ProcessProductPackagingDER /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv\ Finder.build/Debug/ArXiv\ Finder.build/ArXiv\ Finder.app.xcent /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv\ Finder.build/Debug/ArXiv\ Finder.build/ArXiv\ Finder.app.xcent.der (in target 'ArXiv Finder' from project 'ArXiv Finder')
+    cd /Users/rogerlin/XCode-Projects/ArXiv-Finder
+    /usr/bin/derq query -f xml -i /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv\ Finder.build/Debug/ArXiv\ Finder.build/ArXiv\ Finder.app.xcent -o /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv\ Finder.build/Debug/ArXiv\ Finder.build/ArXiv\ Finder.app.xcent.der --raw
+
+    Task input dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv Finder.build/Debug/ArXiv Finder.build/ArXiv Finder.app.xcent
+
+    Task output dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv Finder.build/Debug/ArXiv Finder.build/ArXiv Finder.app.xcent.der
+
+ProcessInfoPlistFile /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArxivKit_ArxivKit.bundle/Contents/Info.plist /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArxivKit.build/Debug/ArxivKit_ArxivKit.build/empty-ArxivKit_ArxivKit.plist (in target 'ArxivKit_ArxivKit' from project 'ArxivKit')
+    cd /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/SourcePackages/checkouts/ArxivKit
+    builtin-infoPlistUtility /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArxivKit.build/Debug/ArxivKit_ArxivKit.build/empty-ArxivKit_ArxivKit.plist -producttype com.apple.product-type.bundle -expandbuildsettings -platform macosx -o /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArxivKit_ArxivKit.bundle/Contents/Info.plist
+
+    Task input dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArxivKit.build/Debug/ArxivKit_ArxivKit.build/empty-ArxivKit_ArxivKit.plist
+
+    Task output dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArxivKit_ArxivKit.bundle/Contents/Info.plist
+
+CopySwiftLibs /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app (in target 'ArXiv Finder' from project 'ArXiv Finder')
+    cd /Users/rogerlin/XCode-Projects/ArXiv-Finder
+    builtin-swiftStdLibTool --copy --verbose --sign 78534EA7E1C52C11688B14ADF6EFD7D0F078E23C --scan-executable /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/MacOS/ArXiv\ Finder.debug.dylib --scan-folder /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/Frameworks --scan-folder /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/PlugIns --scan-folder /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/Library/SystemExtensions --scan-folder /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/Extensions --platform macosx --toolchain /var/run/com.apple.security.cryptexd/mnt/com.apple.MobileAsset.MetalToolchain-v17.2.54.0.cxfLyY/Metal.xctoolchain --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv\ Finder.build/Debug/ArXiv\ Finder.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+    Task input dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app/Contents/MacOS/ArXiv Finder.debug.dylib
+
+    Task output dependencies:
+
+Copy /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/Resources/ArxivKit_ArxivKit.bundle /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArxivKit_ArxivKit.bundle (in target 'ArXiv Finder' from project 'ArXiv Finder')
+    cd /Users/rogerlin/XCode-Projects/ArXiv-Finder
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArxivKit_ArxivKit.bundle /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/Resources
+
+    Task input dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArxivKit_ArxivKit.bundle/
+
+    Task output dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app/Contents/Resources/ArxivKit_ArxivKit.bundle
+
+ProcessInfoPlistFile /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/Info.plist /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv\ Finder.build/Debug/ArXiv\ Finder.build/empty-ArXiv\ Finder.plist (in target 'ArXiv Finder' from project 'ArXiv Finder')
+    cd /Users/rogerlin/XCode-Projects/ArXiv-Finder
+    builtin-infoPlistUtility /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv\ Finder.build/Debug/ArXiv\ Finder.build/empty-ArXiv\ Finder.plist -producttype com.apple.product-type.application -genpkginfo /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/PkgInfo -expandbuildsettings -platform macosx -additionalcontentfile /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv\ Finder.build/Debug/ArXiv\ Finder.build/assetcatalog_generated_info.plist -scanforprivacyfile /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/Resources/ArxivKit_ArxivKit.bundle -o /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app/Contents/Info.plist
+
+    Task input dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv Finder.build/Debug/ArXiv Finder.build/empty-ArXiv Finder.plist
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv Finder.build/Debug/ArXiv Finder.build/assetcatalog_generated_info.plist
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app/Contents/Resources/ArxivKit_ArxivKit.bundle
+
+    Task output dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app/Contents/Info.plist
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app/Contents/PkgInfo
+
+CodeSign /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app (in target 'ArXiv Finder' from project 'ArXiv Finder')
+    cd /Users/rogerlin/XCode-Projects/ArXiv-Finder
+    
+    Signing Identity:     "Apple Development: linroger022@gmail.com (6CHCQ5LN9Z)"
+    
+    /usr/bin/codesign --force --sign 78534EA7E1C52C11688B14ADF6EFD7D0F078E23C --entitlements /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv\ Finder.build/Debug/ArXiv\ Finder.build/ArXiv\ Finder.app.xcent --timestamp\=none --generate-entitlement-der /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app
+
+    Task input dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/ArXiv Finder.build/Debug/ArXiv Finder.build/ArXiv Finder.app.xcent/
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app/Contents/Info.plist/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/ArXiv_Finder.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Assets.xcassets/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Controllers/ArXivController.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Documentation.docc/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Managers/CacheManager.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Models/ArXivPaper.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Services/ArXivService.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Views/ArXivPaperRow.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Views/MainView.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Views/PDFKitView.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Views/PaperDetailView.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Views/PapersListView.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Views/SearchResultsView.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Views/SettingsView.swift/
+        /Users/rogerlin/XCode-Projects/ArXiv-Finder/ArXiv Finder/Views/SidebarView.swift/
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app/Contents/MacOS/ArXiv Finder
+
+    Task output dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app/Contents/MacOS/ArXiv Finder
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app/_CodeSignature
+/Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app: replacing existing signature
+
+Validate /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app (in target 'ArXiv Finder' from project 'ArXiv Finder')
+    cd /Users/rogerlin/XCode-Projects/ArXiv-Finder
+    builtin-validationUtility /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app -no-validate-extension -infoplist-subpath Contents/Info.plist
+
+    Task input dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app/Contents/Info.plist
+
+    Task output dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app
+
+RegisterWithLaunchServices /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app (in target 'ArXiv Finder' from project 'ArXiv Finder')
+    cd /Users/rogerlin/XCode-Projects/ArXiv-Finder
+    /System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -f -R -trusted /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv\ Finder.app
+
+    Task input dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app
+
+    Task output dependencies:
+        /Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Products/Debug/ArXiv Finder.app
+
+note: build debugging is enabled, completed trace: '/Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/XCBuildData/buildDebugging-1765503904.037422/completed-build.trace'
+note: build debugging is enabled, completed database: '/Users/rogerlin/Library/Developer/Xcode/DerivedData/ArXiv_Finder-adzcawncfepnrbdfetjnyattsqbl/Build/Intermediates.noindex/XCBuildData/buildDebugging-1765503904.037422/completed-build.db'
+note: Attempting to load build description from disk
+note: Constructing description
+** BUILD SUCCEEDED **
+

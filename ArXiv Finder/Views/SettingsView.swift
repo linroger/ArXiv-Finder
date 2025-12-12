@@ -77,14 +77,14 @@ struct SettingsView: View {
                                     .labelsHidden()
                             }
                             
-                            if enableCache {
+                                if enableCache {
                                 settingRow(title: "Cache Limit", value: "\(cacheSizeLimit) MB") {
                                     Stepper("", value: $cacheSizeLimit, in: 50...500, step: 50)
                                         .labelsHidden()
                                 }
                                 
                                 Button("Clear Cache") {
-                                    // Action to clear cache
+                                    CacheManager.shared.clearCache()
                                 }
                                 .controlSize(.small)
                             }
@@ -351,7 +351,7 @@ struct SettingsView: View {
                         }
                         
                         Button("Clear Cache") {
-                            // Action to clear cache
+                            CacheManager.shared.clearCache()
                         }
                         .foregroundColor(.red)
                     }
