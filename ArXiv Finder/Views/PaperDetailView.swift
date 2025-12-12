@@ -35,22 +35,181 @@ struct PaperDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) private var dismiss
     
-    @State private var showPDF = false
+    @State private var viewMode: ViewMode = .details
+    
+    enum ViewMode: String, CaseIterable, Identifiable {
+        case details = "Details"
+        case pdf = "PDF"
+        var id: String { self.rawValue }
+    }
 
     var body: some View {
-        if showPDF, let url = URL(string: paper.pdfURL) {
-            PDFKitView(url: url)
-                .navigationTitle(paper.title)
-                #if os(macOS)
-                .navigationSubtitle("PDF View")
-                #else
-                .navigationBarTitleDisplayMode(.inline)
-                #endif
-                .toolbar {
-                    ToolbarItemGroup(placement: toolbarPlacement) {
-                        Button(action: { showPDF = false }) {
-                            Label("Details", systemImage: "doc.text")
+        Group {
+            switch viewMode {
+            case .pdf:
+                if let url = URL(string: paper.pdfURL) {
+                    PDFKitView(url: url)
+                        .navigationTitle(paper.title)
+                        #if os(macOS)
+                        .navigationSubtitle("PDF View")
+                        #else
+                        .navigationBarTitleDisplayMode(.inline)
+                        #endif
+                } else {
+                    ContentUnavailableView("PDF Unavailable", systemImage: "doc.text.slash")
+                }
+            case .details:
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                    // Paper title
+                    Text(paper.title)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .padding(.bottom, 8)
+                    
+                    // Author and date information
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label(paper.authors, systemImage: "person.2")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        
+                        Label(paper.publishedDate.formatted(date: .abbreviated, time: .omitted), 
+                              systemImage: "calendar")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        
+                        // Update date (if exists and is different)
+                        if let updatedDate = paper.updatedDate,
+                           abs(updatedDate.timeIntervalSince(paper.publishedDate)) > 3600 { // More than 1 hour difference
+                            Label("Updated: \(updatedDate.formatted(date: .abbreviated, time: .omitted))", 
+                                  systemImage: "arrow.clockwise")
+                                .font(.caption)
+                                .foregroundColor(.orange)
                         }
+                    }
+                    
+                    Divider()
+                    
+                    // Paper categories
+                    if !paper.categories.isEmpty {
+                            let categories = paper.categories.split(separator: " ").map(String.init)
+                            HStack(spacing: 8) {
+                                ForEach(categories, id: \.self) { category in
+                                    Text(category)
+                                        .font(.subheadline)
+                                        .padding(.horizontal, 12)
+                                        .padding(.vertical, 6)
+                                        .background(Color.blue.opacity(0.1))
+                                        .foregroundColor(.blue)
+                                        .cornerRadius(8)
+                                }
+                            }
+                        }
+                    
+                    Divider()
+                    
+                    // Paper summary
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Summary")
+                            .font(.headline)
+                        
+                        Text(paper.summary)
+                            .font(.body)
+                            .lineSpacing(4)
+                    }
+                    
+                    Divider()
+                    
+                    // Access links
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Links")
+                            .font(.headline)
+                        
+                        HStack(spacing: 16) {
+                            if !paper.pdfURL.isEmpty {
+                                Button(action: { viewMode = .pdf }) {
+                                    HStack {
+                                        Image(systemName: "doc.fill")
+                                        Text("View PDF")
+                                    }
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .background(Color.red)
+                                    .cornerRadius(8)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                            
+                            if !paper.linkURL.isEmpty {
+                                Link(destination: URL(string: paper.linkURL)!) {
+                                    HStack {
+                                        Image(systemName: "link")
+                                        Text("View in ArXiv")
+                                    }
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .background(Color.blue)
+                                    .cornerRadius(8)
+                                }
+                            }
+                        }
+                    }
+                    
+                    Spacer(minLength: 50)
+                }
+                .padding()
+            }
+            .navigationTitle("Paper Detail")
+            #if os(macOS)
+            .navigationSubtitle(paper.authors)
+            .frame(minWidth: 400, minHeight: 300)
+            #else
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: toolbarPlacement) {
+                // View Mode Picker
+                if !paper.pdfURL.isEmpty {
+                    Picker("View Mode", selection: $viewMode) {
+                        ForEach(ViewMode.allCases) { mode in
+                            Text(mode.rawValue).tag(mode)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .frame(width: 150)
+                }
+                
+                // Toolbar items for PDF view
+                if viewMode == .pdf, let url = URL(string: paper.pdfURL) {
+                     Button(action: { downloadPDF(url: url) }) {
+                        Label("Download", systemImage: "arrow.down.circle")
+                    }
+                    
+                    ShareLink(item: url)
+                }
+                
+                // Favorite button for both platforms
+                if let controller = controller {
+                    Button(action: {
+                        controller.toggleFavorite(for: paper)
+                    }) {
+                        Image(systemName: paper.isFavorite ? "heart.fill" : "heart")
+                            .foregroundColor(paper.isFavorite ? .red : .primary)
+                    }
+                    .help(paper.isFavorite ? "Remove from favorites" : "Add to favorites")
+                }
+                
+                // Share link for details view if not in PDF mode
+                if viewMode == .details, let url = URL(string: paper.pdfURL) {
+                     ShareLink(item: url)
+                }
+            }
+        }
+    }
                         
                         Button(action: { downloadPDF(url: url) }) {
                             Label("Download", systemImage: "arrow.down.circle")
