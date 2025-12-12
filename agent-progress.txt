@@ -1,0 +1,6 @@
+# Agent Progress Log - ArXiv Finder
+
+## Project Overview
+ArXiv Finder is a macOS/iOS app for browsing ArXiv papers. The goal is to modernize the UI, add sorting/searching, PDF integration, and enhanced settings.
+
+## Session Log

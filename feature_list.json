@@ -1,0 +1,51 @@
+{
+  "id": "feature_list",
+  "features": [
+    {
+      "id": "feat_data_logic",
+      "category": "logic",
+      "description": "Implement Sorting (Date, Alpha, Citations) and Search logic",
+      "steps": [
+        "Update ArXivPaper model to support citation count (mock if needed)",
+        "Update ArXivController to handle sorting",
+        "Update ArXivController to handle searching",
+        "Add Search bar to UI",
+        "Add Sort menu to UI"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat_pdf_integration",
+      "category": "functional",
+      "description": "Integrated PDF View and Toolbar Toggle",
+      "steps": [
+        "Create PDFViewer view using PDFKit",
+        "Add toggle in toolbar to switch between Details and PDF",
+        "Add Download PDF button",
+        "Add Export PDF button"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat_ui_polish",
+      "category": "ui",
+      "description": "Sleek Sidebar and Middle Column",
+      "steps": [
+        "Refactor SidebarView for macOS native look",
+        "Refactor PapersListView/Row for sleek look",
+        "Ensure iPadOS compatibility"
+      ],
+      "passes": false
+    },
+    {
+      "id": "feat_settings",
+      "category": "functional",
+      "description": "Enhanced Settings",
+      "steps": [
+        "Add theme options or other customizations",
+        "Add cache management if applicable"
+      ],
+      "passes": false
+    }
+  ]
+}
