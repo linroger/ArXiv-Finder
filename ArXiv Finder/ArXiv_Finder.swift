@@ -127,4 +127,10 @@ struct ArXiv_Finder: App {
         .modelContainer(sharedModelContainer)
         #endif
     }
+    
+    // Additional initializers for handling migration or custom setup could be added here
+    init() {
+        // App-wide initialization
+        // E.g. Theme setup, global styles
+    }
 } 
