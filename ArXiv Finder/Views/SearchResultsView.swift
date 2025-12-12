@@ -298,24 +298,40 @@ struct SearchResultsView: View {
                 
                 Spacer()
                 
-                Button("New Search") {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        showSearchInterface = true
-                        selectedPaper = nil
+                        // Sort Menu for Search Results
+                        Menu {
+                            Picker("Sort By", selection: Binding(
+                                get: { controller.currentSortOption },
+                                set: { controller.changeSortOption(to: $0) }
+                            )) {
+                                ForEach(ArXivController.SortOption.allCases) { option in
+                                    Text(option.rawValue).tag(option)
+                                }
+                            }
+                        } label: {
+                            Label("Sort", systemImage: "arrow.up.arrow.down")
+                        }
+                        .menuStyle(.borderlessButton)
+                        .fixedSize()
+                        
+                        Button("New Search") {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                showSearchInterface = true
+                                selectedPaper = nil
+                            }
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
+                        
+                        Button("Clear") {
+                            controller.clearSearch()
+                            selectedPaper = nil
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
                     }
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                
-                Button("Clear") {
-                    controller.clearSearch()
-                    selectedPaper = nil
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-            }
-            .padding()
-            .background(Color.gray.opacity(0.1))
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
             
             // Results list with proper selection handling
             #if os(macOS)
