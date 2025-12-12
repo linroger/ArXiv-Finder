@@ -253,7 +253,7 @@ struct PapersListView: View {
                         }
                     }
                     
-                    if let loadCS = loadComputerSciencePapers {
+                    if let loadCS = categoryLoaders?["cs"] {
                         Button("Computer Science") {
                             Task {
                                 currentCategory = "cs"
@@ -262,7 +262,7 @@ struct PapersListView: View {
                         }
                     }
                     
-                    if let loadMath = loadMathematicsPapers {
+                    if let loadMath = categoryLoaders?["math"] {
                         Button("Mathematics") {
                             Task {
                                 currentCategory = "math"
@@ -271,7 +271,7 @@ struct PapersListView: View {
                         }
                     }
                     
-                    if let loadPhysics = loadPhysicsPapers {
+                    if let loadPhysics = categoryLoaders?["physics"] {
                         Button("Physics") {
                             Task {
                                 currentCategory = "physics"
@@ -280,7 +280,7 @@ struct PapersListView: View {
                         }
                     }
                     
-                    if let loadBio = loadQuantitativeBiologyPapers {
+                    if let loadBio = categoryLoaders?["q-bio"] {
                         Button("Quantitative Biology") {
                             Task {
                                 currentCategory = "q-bio"
@@ -289,7 +289,7 @@ struct PapersListView: View {
                         }
                     }
                     
-                    if let loadFin = loadQuantitativeFinancePapers {
+                    if let loadFin = categoryLoaders?["q-fin"] {
                         Button("Quantitative Finance") {
                             Task {
                                 currentCategory = "q-fin"
@@ -298,7 +298,7 @@ struct PapersListView: View {
                         }
                     }
                     
-                    if let loadStats = loadStatisticsPapers {
+                    if let loadStats = categoryLoaders?["stat"] {
                         Button("Statistics") {
                             Task {
                                 currentCategory = "stat"
@@ -307,7 +307,7 @@ struct PapersListView: View {
                         }
                     }
                     
-                    if let loadEE = loadElectricalEngineeringPapers {
+                    if let loadEE = categoryLoaders?["eess"] {
                         Button("Electrical Engineering") {
                             Task {
                                 currentCategory = "eess"
@@ -316,7 +316,7 @@ struct PapersListView: View {
                         }
                     }
                     
-                    if let loadEcon = loadEconomicsPapers {
+                    if let loadEcon = categoryLoaders?["econ"] {
                         Button("Economics") {
                             Task {
                                 currentCategory = "econ"

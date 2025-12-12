@@ -155,14 +155,16 @@ struct MainView: View {
                     errorMessage: .constant(controller.errorMessage),
                     controller: controller,
                     loadLatestPapers: { await controller.loadLatestPapers() },
-                    loadComputerSciencePapers: { await controller.loadComputerSciencePapers() },
-                    loadMathematicsPapers: { await controller.loadMathematicsPapers() },
-                    loadPhysicsPapers: { await controller.loadPhysicsPapers() },
-                    loadQuantitativeBiologyPapers: { await controller.loadQuantitativeBiologyPapers() },
-                    loadQuantitativeFinancePapers: { await controller.loadQuantitativeFinancePapers() },
-                    loadStatisticsPapers: { await controller.loadStatisticsPapers() },
-                    loadElectricalEngineeringPapers: { await controller.loadElectricalEngineeringPapers() },
-                    loadEconomicsPapers: { await controller.loadEconomicsPapers() }
+                    categoryLoaders: [
+                        "cs": { await controller.loadComputerSciencePapers() },
+                        "math": { await controller.loadMathematicsPapers() },
+                        "physics": { await controller.loadPhysicsPapers() },
+                        "q-bio": { await controller.loadQuantitativeBiologyPapers() },
+                        "q-fin": { await controller.loadQuantitativeFinancePapers() },
+                        "stat": { await controller.loadStatisticsPapers() },
+                        "eess": { await controller.loadElectricalEngineeringPapers() },
+                        "econ": { await controller.loadEconomicsPapers() }
+                    ]
                 )
                 .navigationTitle("ArXiv Finder")
                 .toolbar {
