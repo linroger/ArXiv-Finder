@@ -1,55 +1,36 @@
-# Project Analysis and Solution Handoff
+# ArXiv Finder - Project Handoff
 
-**Last Updated**: Thu Dec 11 2025
-**Current Status**: Completed
-**Phase**: Complete
+**Status:** ✅ Build Succeeded | Feature Complete
+**Date:** Thu Dec 11 2025
 
-## Project Overview
-**Original Request**: Improve the ArXiv Finder app with sorting, search, PDF view, UI polish, and enhanced settings.
-**Core Problem**: The app lacked essential features like sorting and in-app PDF viewing, and the UI needed modernization for macOS/iPadOS.
-**Success Criteria**: App builds, includes requested features (Sort, Search, PDF, Settings, UI Polish), and runs without errors.
+## Summary of Changes
+This session focused on fixing build errors and finalizing the "Modernization" feature set.
 
-## Analysis Summary
-**Problem Type**: Feature Implementation & UI Refactoring
-**Complexity Level**: Moderate
-**Key Components**:
-- **ArXivController**: Logic for sorting and searching.
-- **ArXivPaper**: Model updates (citation count).
-- **PaperDetailView**: PDFKit integration.
-- **SidebarView**: Native macOS styling.
-- **SettingsView**: New customization options.
+### 1. Build Fixes
+- **Problem:** `PDFKitView.swift` and `CacheManager.swift` were missing from the Xcode project file (`project.pbxproj`), causing "Undefined symbol" and "Type not found" errors.
+- **Solution:** Manually patched `project.pbxproj` to include file references and build sources for both files.
+- **Result:** Project now compiles successfully for macOS (and likely iOS, though strictly verified on macOS).
 
-## Current Progress
-- [✓] Phase 1: Deep Understanding & Planning - Completed
-- [✓] Phase 2: Logic Implementation (Sort/Search) - Completed
-- [✓] Phase 3: PDF Integration - Completed
-- [✓] Phase 4: UI Polish (Sidebar, Rows) - Completed
-- [✓] Phase 5: Enhanced Settings - Completed
-- [✓] Phase 6: Validation & Refinement - Completed
+### 2. PDF Caching
+- **New Component:** `CacheManager` (Singleton)
+  - Handles saving PDF data to the app's `.cachesDirectory`.
+  - Provides methods to retrieve local URLs, check cache size, and clear cache.
+- **Integration:**
+  - `PaperDetailView`: When downloading a PDF, it now also saves a copy to the local cache.
+  - `SettingsView`: "Clear Cache" button is now functional, calling `CacheManager.shared.clearCache()`.
 
-## Key Changes
-1.  **Sorting & Searching**:
-    -   Added `SortOption` (Date, Title, Citations).
-    -   Implemented searching with `enhancedSearch`.
-    -   Added UI controls for sorting and searching.
-2.  **PDF Integration**:
-    -   Created `PDFKitView`.
-    -   Added "View Mode" picker (Details vs PDF) in `PaperDetailView`.
-    -   Added Download and Share capabilities.
-3.  **UI Refinements**:
-    -   Converted `SidebarView` to use `List` for native macOS feel.
-    -   Improved `ArXivPaperRow` layout and added citation counts.
-    -   Polished `PaperDetailView` category badges.
-4.  **Settings**:
-    -   Added Cache Management (Toggle, Limit, Clear).
-    -   Added Accent Color selection.
+### 3. Theming
+- **Global Tint:** Updated `ArXiv_Finder.swift` (App entry point) to observe the `accentColor` AppStorage key.
+- **Application:** Applied `.tint(...)` to the root `WindowGroup`, ensuring the selected color (Blue, Red, Orange, etc.) permeates the entire app hierarchy immediately.
 
-## Next Steps
-1.  Run the app in Xcode to verify runtime behavior.
-2.  Test PDF download on actual device/simulator.
-3.  Verify iPadOS layout adaptations.
+## Key Files
+- `ArXiv_Finder/ArXiv_Finder.swift`: App entry point, holds global theme logic.
+- `ArXiv_Finder/Managers/CacheManager.swift`: New file, handles file I/O.
+- `ArXiv_Finder/Views/PaperDetailView.swift`: Updated with download/cache logic.
+- `ArXiv_Finder/Views/SettingsView.swift`: Updated to wire up cache clearing.
+- `ArXiv Finder.xcodeproj/project.pbxproj`: Modified to register new files.
 
-## Quality Validation
-- [✓] Requirements met: Sorting, Search, PDF, UI Polish, Settings.
-- [✓] Code compiles (static analysis).
-- [✓] Architecture followed (MVC/MVVM patterns respected).
+## Next Steps for Human Developer / Future Agent
+1.  **Visual QA:** Run the app. Verify that changing the "Accent Color" in Settings immediately updates buttons and icons in the main window.
+2.  **iOS Refinement:** The `downloadPDF` function in `PaperDetailView` has a simplified implementation for iOS. Consider implementing `UIDocumentPickerViewController` or a proper "Save to Files" sheet for a better mobile experience.
+3.  **Unit Tests:** Add tests for `CacheManager` to ensure file limits and clearing work as expected.
