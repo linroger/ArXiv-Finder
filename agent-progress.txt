@@ -14,3 +14,9 @@ Session 1: Final verification - All requested features implemented and code comp
 Session 1: Completed. Handing off.
 Session 1: Final handoff. All tasks complete.
 Session 1: Build fixed. CacheManager created. PDF download logic wired up. All tests pass.
+Session 2 (2026-02-11): Synced v2.0-ship with origin/main and prepared release deliverables.
+Session 2: Studied the full app architecture (models/services/controller/views/tests) and authored a complete README with install, run, usage, architecture, and operations guidance.
+Session 2: Organized screenshot assets into clean names in Screenshots/ and integrated them into README sections.
+Session 2: Added scripts/build-dmg.sh to produce a macOS Release app and package a distributable DMG in dist/.
+Session 2: Built and verified installer artifact dist/ArXiv-Finder-1.1.2-macOS.dmg (mount check includes ArXiv Finder.app + Applications symlink).
+Session 2: Quality gates run - ./init.sh passed; xcodebuild build passed; xcodebuild test is currently unavailable because scheme test action is not configured.
