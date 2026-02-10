@@ -20,3 +20,4 @@ Session 2: Organized screenshot assets into clean names in Screenshots/ and inte
 Session 2: Added scripts/build-dmg.sh to produce a macOS Release app and package a distributable DMG in dist/.
 Session 2: Built and verified installer artifact dist/ArXiv-Finder-1.1.2-macOS.dmg (mount check includes ArXiv Finder.app + Applications symlink).
 Session 2: Quality gates run - ./init.sh passed; xcodebuild build passed; xcodebuild test is currently unavailable because scheme test action is not configured.
+Session 2: Branch pushed and PR opened to main: https://github.com/linroger/ArXiv-Finder/pull/3

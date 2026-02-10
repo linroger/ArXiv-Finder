@@ -1,8 +1,8 @@
 # Handoff.md
 
-**Last Updated (UTC):** 2026-02-11 13:15 UTC  
-**Status:** In Progress  
-**Current Focus:** Finalize release docs + DMG packaging, then push branch and open PR to `main`.
+**Last Updated (UTC):** 2026-02-11 13:18 UTC  
+**Status:** Complete  
+**Current Focus:** Session complete; PR is open and ready for review.
 
 ## 1) Request & Context
 - **User’s request (paraphrased):** Study the full ArXiv Finder codebase, write a polished `README.md` covering install/run/usage/features, organize screenshots in the README, create a packaged `.dmg` installer, push to GitHub, merge latest branch with `main`, and create a pull request.
@@ -43,8 +43,8 @@
   Evidence: `scripts/build-dmg.sh`.
 - [x] Build and verify DMG artifact.  
   Evidence: `dist/ArXiv-Finder-1.1.2-macOS.dmg`, `hdiutil verify`, mount listing.
-- [ ] Push branch and create PR to `main`.  
-  Planned evidence: push output + PR URL.
+- [x] Push branch and create PR to `main`.  
+  Evidence: branch pushed to `origin/v2.0-ship`; PR opened at `https://github.com/linroger/ArXiv-Finder/pull/3`.
 
 ## 5) Findings, Decisions, Assumptions
 - **Finding:** App includes both iOS and macOS UI flows, with a macOS-centered 3-column split view and PDF detail reader.
@@ -83,9 +83,10 @@
   - attach/list image contents -> app + Applications link present
 
 ## 9) Remaining Work & Next Steps
-- **Open items & blockers:** Push branch and create PR URL (in progress).
+- **Open items & blockers:** No blockers for this request. Await PR review/merge.
 - **Risks:** DMG is not notarized; first-launch Gatekeeper prompt likely on some systems.
-- **Next working interval plan:** Complete GitHub push/PR and update this file with final status and links.
+- **Next working interval plan:** If requested, add Apple Developer signing + notarization workflow for distribution-grade installer trust.
 
 ## 10) Updates to This File (append-only)
 - 2026-02-11 13:15 UTC: Replaced outdated handoff with current release/packaging workflow, validation evidence, and remaining GitHub actions.
+- 2026-02-11 13:18 UTC: Marked session complete after push and PR creation; added PR link and final state.
