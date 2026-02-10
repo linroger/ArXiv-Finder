@@ -1,217 +1,174 @@
 # ArXiv Finder
 
-A multiplatform application (iOS and macOS) for exploring and managing scientific papers from ArXiv.
+<p align="center">
+  <strong>A native SwiftUI app for discovering, filtering, and reading research papers from arXiv.</strong>
+</p>
 
-## 📋 Description
+<p align="center">
+  <img alt="Platform" src="https://img.shields.io/badge/Platform-macOS%20%7C%20iOS-0A84FF">
+  <img alt="SwiftUI" src="https://img.shields.io/badge/UI-SwiftUI-34C759">
+  <img alt="Persistence" src="https://img.shields.io/badge/Data-SwiftData-FF9F0A">
+  <img alt="API" src="https://img.shields.io/badge/API-arXiv-5E5CE6">
+</p>
 
-ArXiv Finder allows users to search, explore, and save scientific papers from ArXiv with a modern and native interface. The application offers advanced search functionality, category-based browsing, favorites management, and local storage for offline access.
+## Overview
 
-## ✨ Features
+ArXiv Finder is a multi-platform Apple app (macOS + iOS) that lets you:
 
-- **Multiplatform**: Native iOS and macOS apps with adaptive UI
-- **Advanced Search**: Search papers by title, author, keywords, or ArXiv ID with real-time results
-- **Search History**: Remember and reuse previous searches for quick access
-- **Category Browsing**: Explore papers by Computer Science, Mathematics, Physics, and more
-- **Favorites System**: Mark important papers for later reading with persistent storage
-- **Local Storage**: Automatic paper caching for offline access using SwiftData
-- **Native Interface**: Platform-optimized design (NavigationSplitView for macOS, NavigationStack for iOS)
-- **Modern UI**: Clean, responsive interface with proper dark mode support
+- Browse recent papers by major arXiv domains
+- Search papers by keywords with category filtering
+- Sort results by date, title, or citation count
+- Save favorites with persistent local storage
+- Read paper details and PDFs inside the app
+- Customize behavior and UI from a built-in Settings screen
 
-## 🛠 Technologies Used
+The app is built with SwiftUI, uses SwiftData for persistence, and relies on [ArxivKit](https://github.com/ivicamil/ArxivKit) for arXiv API queries.
 
-- **SwiftUI**: Modern and declarative UI framework
-- **SwiftData**: Advanced data persistence and modeling
-- **ArXivKit**: Third-party library for robust ArXiv API integration
-- **URLSession**: Networking with comprehensive error handling
-- **Async/Await**: Modern Swift concurrency with @MainActor
-- **Swift Package Manager**: Dependency management
+## Screenshots
 
-## 📱 Architecture
+### Main Workspace
+![ArXiv Finder main workspace](Screenshots/app-overview.png)
 
-The project follows the **Model-View-Controller (MVC)** pattern with modern Swift best practices:
+### In-App PDF Reader
+![ArXiv Finder PDF reader](Screenshots/app-pdf-view.png)
 
-### Models
-- `ArXivPaper`: SwiftData model for scientific papers with favorites support
+### Settings
+![ArXiv Finder settings](Screenshots/app-settings.png)
 
-### Views
-- `MainView`: Main coordinator view with platform-specific navigation
-- `SidebarView`: Sidebar navigation for macOS
-- `PapersListView`: Adaptive paper list with category filtering
-- `SearchResultsView`: Advanced search interface with history
-- `PaperDetailView`: Detailed paper view with sharing capabilities
-- `ArXivPaperRow`: Reusable paper row component
-- `SettingsView`: Application configuration
+## Key Features
 
-### Controllers
-- `ArXivController`: Centralized business logic and state management
+- Category browser:
+  - Latest
+  - Computer Science
+  - Mathematics
+  - Physics
+  - Quantitative Biology
+  - Quantitative Finance
+  - Statistics
+  - Electrical Engineering
+  - Economics
+- Powerful search:
+  - Query-based search with category filter
+  - Search history shortcuts
+- Sorting controls:
+  - Date
+  - Title
+  - Citations
+- Reading workflow:
+  - Rich detail pane (authors, dates, summary, categories, links)
+  - Built-in PDF rendering via PDFKit
+  - Download/share actions for PDFs
+- Favorites:
+  - One-click favorite toggle from lists and detail view
+  - Persistent favorite state through SwiftData
+- Configurable app behavior:
+  - Max papers per load
+  - Default category
+  - Auto-refresh + refresh interval
+  - Accent color, compact mode, preview visibility, font size
+  - PDF cache toggles and cache clearing
 
-### Services
-- `ArXivService`: ArXiv API communication using ArXivKit with category support
+## Requirements
 
-## 📚 Documentation
+- macOS 15.5 or later (for the macOS app)
+- Xcode with modern SwiftUI/SwiftData support (for building from source)
+- Internet connection to fetch papers from arXiv
 
-For detailed information, consult the integrated Xcode documentation:
+## Install and Run
 
-- **MVC Architecture**: Comprehensive DocC documentation for design patterns and implementation details
-- **ArXiv API Integration**: Complete ArXivKit usage documentation available in DocC
-- **Search Functionality**: Advanced search capabilities including history and category filtering
-- **Favorites System**: Complete favorites management documentation
-- **Components**: Detailed documentation of each component available in Xcode Quick Help
+### Option 1: Install from DMG (Recommended for users)
 
-To access documentation:
-1. Open the project in Xcode
-2. Go to `Product > Build Documentation` or press `Cmd + Shift + Control + D`
-3. Explore the automatically generated documentation
+1. Download the latest `ArXiv-Finder-<version>-macOS.dmg`.
+2. Open the DMG.
+3. Drag `ArXiv Finder.app` into `Applications`.
+4. Launch from `Applications`.
 
-## 🚀 Installation
+If macOS blocks first launch, right-click the app, choose `Open`, then confirm.
 
-### Requirements
-
-- macOS 14.0+ or iOS 17.6+
-- Xcode 15.0+
-- Swift 5.9+
-
-### Installation Steps
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/jhg45-ua/Arxiv-Finder.git
-   cd "ArXiv Finder"
-   ```
-
-2. **Open the project**:
-   ```bash
-   open "ArXiv Finder.xcodeproj"
-   ```
-
-3. **Configure the project**:
-   - Select your development team in project settings
-   - Adjust Bundle Identifier if necessary
-
-4. **Run the application**:
-   - Select the desired simulator or device
-   - Press `Cmd + R` to build and run
-
-## 📖 Usage
-
-### Navigation
-
-- **iOS**: NavigationStack with bottom tab navigation for optimal mobile experience
-- **macOS**: NavigationSplitView with sidebar for comprehensive desktop experience
-
-### Paper Search
-
-1. **Search Interface**: Use the advanced search interface to find papers by:
-   - Title keywords
-   - Author names
-   - Abstract content
-   - ArXiv ID
-
-2. **Category Filtering**: Browse papers by scientific categories:
-   - Computer Science (cs)
-   - Mathematics (math)
-   - Physics (physics)
-   - Quantitative Biology (q-bio)
-   - Quantitative Finance (q-fin)
-   - Statistics (stat)
-   - Electrical Engineering (eess)
-   - Economics (econ)
-
-3. **Search History**: Quickly access previous searches with the built-in history feature
-
-### Paper Management
-
-- **Automatic Saving**: Papers are automatically cached for offline access using SwiftData
-- **Favorites**: Mark important papers with the heart icon for quick access later
-- **Paper Details**: View complete abstracts, author information, and access PDF links
-- **Sharing**: Share papers with other users using the system share sheet
-
-## 🔧 Configuration
-
-### Application Settings
-
-- **Default Categories**: Configure your preferred scientific categories for browsing
-- **Search Preferences**: Customize search behavior and result display
-- **Data Management**: Configure automatic caching and storage preferences
-- **Interface**: Toggle between light and dark modes (follows system preference)
-
-## 📁 Project Structure
-
-```
-ArXiv Finder/
-├── ArXiv_Finder.swift          # Main application entry point
-├── Models/
-│   └── ArXivPaper.swift         # SwiftData model with favorites support
-├── Views/
-│   ├── MainView.swift           # Main coordinator view
-│   ├── SidebarView.swift        # Sidebar navigation (macOS)
-│   ├── PapersListView.swift     # Adaptive paper list
-│   ├── SearchResultsView.swift  # Advanced search interface
-│   ├── PaperDetailView.swift    # Detailed paper view
-│   ├── ArXivPaperRow.swift      # Reusable paper row component
-│   └── SettingsView.swift       # Application settings
-├── Controllers/
-│   └── ArXivController.swift    # Business logic and state management
-├── Services/
-│   └── ArXivService.swift       # ArXiv API service using ArXivKit
-├── Assets.xcassets/             # App icons and visual resources
-└── Documentation.docc/          # DocC documentation
-    ├── Architecture.md
-    ├── Search-Feature.md
-    ├── Favourites-Feature.md
-    └── API-Guide.md
-```
-
-## 🧪 Testing
-
-The project includes comprehensive unit and UI tests:
+### Option 2: Build and run from source
 
 ```bash
-# Run all tests
-Cmd + U
-
-# Run specific tests
-Cmd + Control + U
+git clone https://github.com/linroger/ArXiv-Finder.git
+cd ArXiv-Finder
+open "ArXiv Finder.xcodeproj"
 ```
 
-### Test Structure
-- **Unit Tests**: ArXiv_FinderTests.swift - Core functionality testing
-- **UI Tests**: ArXiv_FinderUITests.swift - Interface and user interaction testing
-- **Launch Tests**: Performance and startup testing
+Then select the `ArXiv Finder` scheme and run in Xcode.
 
-## 📝 Contributing
+CLI build (macOS target):
 
-1. Fork the project
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+```bash
+xcodebuild \
+  -project "ArXiv Finder.xcodeproj" \
+  -scheme "ArXiv Finder" \
+  -destination "platform=macOS" \
+  build
+```
 
-### Development Guidelines
-- Follow SwiftUI and Swift best practices
-- Write comprehensive documentation
-- Include unit tests for new features
-- Ensure compatibility with both iOS and macOS
+## Create a DMG Installer
 
-## 📄 License
+This repository includes a packaging script:
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+```bash
+./scripts/build-dmg.sh
+```
 
-## 👨‍💻 Author
+Output:
 
-**Julián Hinojosa Gil**
+- DMG file: `dist/ArXiv-Finder-<marketing-version>-macOS.dmg`
+- Release app bundle (derived data): `.build-macos/Build/Products/Release/ArXiv Finder.app`
 
-## 🔗 Useful Links
+## How to Use the App
 
-- [ArXiv API Documentation](https://arxiv.org/help/api)
-- [ArXivKit Library](https://github.com/ivicamil/ArxivKit)
-- [SwiftUI Documentation](https://developer.apple.com/documentation/swiftui)
-- [SwiftData Documentation](https://developer.apple.com/documentation/swiftdata)
+1. Launch `ArXiv Finder`.
+2. Pick a category from the sidebar (macOS) or category menu (iOS).
+3. Use the sort menu to reorder by date, title, or citation count.
+4. Open a paper to view details and switch between `Details` and `PDF`.
+5. Click/tap the heart icon to add/remove favorites.
+6. Use the Search screen to run keyword searches and filter by category.
+7. Open Settings to configure refresh behavior, UI preferences, and cache options.
 
-## 📊 App Information
+## Architecture Summary
 
-- **Current Version**: 1.1.0
-- **Build**: 32
-- **Minimum iOS**: 17.6+
-- **Minimum macOS**: 14.0+
-- **Bundle ID**: com.jhg.ArXiv-Finder
+```text
+ArXiv Finder/
+├── Models/
+│   └── ArXivPaper.swift
+├── Services/
+│   └── ArXivService.swift
+├── Controllers/
+│   └── ArXivController.swift
+├── Views/
+│   ├── MainView.swift
+│   ├── SidebarView.swift
+│   ├── PapersListView.swift
+│   ├── SearchResultsView.swift
+│   ├── PaperDetailView.swift
+│   ├── ArXivPaperRow.swift
+│   ├── PDFKitView.swift
+│   └── SettingsView.swift
+└── Managers/
+    └── CacheManager.swift
+```
+
+## Notes and Current Behavior
+
+- Citation counts are currently mock values (arXiv feed does not provide citation counts directly).
+- PDF caching is supported via `CacheManager`; users can clear cache in Settings.
+- Search uses ArxivKit-backed queries and includes category-aware filtering.
+
+## Testing and Smoke Checks
+
+```bash
+# Lightweight project smoke check
+./init.sh
+
+# Build
+xcodebuild -project "ArXiv Finder.xcodeproj" -scheme "ArXiv Finder" -destination "platform=macOS" build
+```
+
+Note: the currently shared Xcode scheme is not configured with an active `test` action, so `xcodebuild ... test` will return a scheme configuration error until test execution is enabled in the scheme.
+
+## License
+
+No license file is currently included in this repository.
