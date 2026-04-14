@@ -193,13 +193,7 @@ Cmd + Control + U
 - Include unit tests for new features
 - Ensure compatibility with both iOS and macOS
 
-## 📄 License
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
-
-## 👨‍💻 Author
-
-**Julián Hinojosa Gil**
 
 ## 🔗 Useful Links
 
@@ -208,10 +202,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 - [SwiftUI Documentation](https://developer.apple.com/documentation/swiftui)
 - [SwiftData Documentation](https://developer.apple.com/documentation/swiftdata)
 
-## 📊 App Information
-
-- **Current Version**: 1.1.0
-- **Build**: 32
-- **Minimum iOS**: 17.6+
-- **Minimum macOS**: 14.0+
-- **Bundle ID**: com.jhg.ArXiv-Finder
