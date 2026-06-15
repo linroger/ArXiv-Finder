@@ -36,7 +36,11 @@ struct PaperDetailView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var viewMode: ViewMode = .details
-    
+
+    /// Resolved URL used by the PDF viewer — a local cached file when available,
+    /// otherwise the remote arXiv URL. Prepared when PDF mode is shown.
+    @State private var resolvedPDFURL: URL?
+
     enum ViewMode: String, CaseIterable, Identifiable {
         case details = "Details"
         case pdf = "PDF"
@@ -47,7 +51,7 @@ struct PaperDetailView: View {
         Group {
             switch viewMode {
             case .pdf:
-                if let url = URL(string: paper.pdfURL) {
+                if let url = resolvedPDFURL ?? URL(string: paper.pdfURL) {
                     PDFKitView(url: url)
                         .navigationTitle(paper.title)
                         #if os(macOS)
@@ -55,6 +59,7 @@ struct PaperDetailView: View {
                         #else
                         .navigationBarTitleDisplayMode(.inline)
                         #endif
+                        .task(id: paper.id) { await preparePDF() }
                 } else {
                     ContentUnavailableView("PDF Unavailable", systemImage: "doc.text.slash")
                 }
@@ -141,8 +146,8 @@ struct PaperDetailView: View {
                                 .buttonStyle(.plain)
                             }
                             
-                            if !paper.linkURL.isEmpty {
-                                Link(destination: URL(string: paper.linkURL)!) {
+                            if let linkURL = URL(string: paper.linkURL) {
+                                Link(destination: linkURL) {
                                     HStack {
                                         Image(systemName: "link")
                                         Text("View in ArXiv")
@@ -211,18 +216,63 @@ struct PaperDetailView: View {
         }
     }
     
+    /// Whether PDF caching is enabled in Settings (default on).
+    private var cacheEnabled: Bool {
+        UserDefaults.standard.object(forKey: "enableCache") as? Bool ?? true
+    }
+
+    /// Prepares the URL shown by the PDF viewer: a cached local file when available,
+    /// otherwise the remote URL (downloaded and cached in the background for next time).
+    private func preparePDF() async {
+        if cacheEnabled, let cached = CacheManager.shared.getCachedPDF(for: paper.id) {
+            resolvedPDFURL = cached
+            return
+        }
+
+        guard let remote = URL(string: paper.pdfURL) else { return }
+        resolvedPDFURL = remote
+
+        guard cacheEnabled else { return }
+        // Cache for offline/instant reuse without blocking the viewer.
+        if let data = try? await Self.fetchValidatedPDF(from: remote),
+           let local = try? CacheManager.shared.savePDF(data: data, for: paper.id) {
+            resolvedPDFURL = local
+        }
+    }
+
+    /// Downloads a PDF, validating the HTTP status and the `%PDF` magic bytes so a
+    /// redirected HTML error page is never written/cached as a PDF.
+    private static func fetchValidatedPDF(from url: URL) async throws -> Data {
+        let (data, response) = try await ArXivService.session.data(from: url)
+        if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
+            throw URLError(.badServerResponse)
+        }
+        guard data.starts(with: [0x25, 0x50, 0x44, 0x46]) else { // "%PDF"
+            throw URLError(.cannotParseResponse)
+        }
+        return data
+    }
+
+    /// Builds a filesystem-safe download filename from the paper title.
+    private var downloadFileName: String {
+        let invalid = CharacterSet(charactersIn: "/\\:?%*|\"<>")
+        let base = paper.title.components(separatedBy: invalid).joined(separator: "-")
+        let trimmed = base.trimmingCharacters(in: .whitespacesAndNewlines)
+        return (trimmed.isEmpty ? "paper" : trimmed) + ".pdf"
+    }
+
     private func downloadPDF(url: URL) {
         #if os(macOS)
         let savePanel = NSSavePanel()
         savePanel.allowedContentTypes = [.pdf]
-        savePanel.nameFieldStringValue = "\(paper.title).pdf"
+        savePanel.nameFieldStringValue = downloadFileName
         savePanel.begin { response in
             if response == .OK, let targetURL = savePanel.url {
                 Task {
                     do {
-                        let (data, _) = try await URLSession.shared.data(from: url)
+                        let data = try await Self.fetchValidatedPDF(from: url)
                         try data.write(to: targetURL)
-                        // Also cache it
+                        // Also cache it for in-app reuse.
                         _ = try? CacheManager.shared.savePDF(data: data, for: paper.id)
                     } catch {
                         print("Failed to download PDF: \(error)")
@@ -231,21 +281,18 @@ struct PaperDetailView: View {
             }
         }
         #else
-        // iOS handling would typically involve UIActivityViewController or UIDocumentPickerViewController
-        // For simplicity in this scope, ShareLink covers export. 
-        // A specific download to Files action requires more boilerplate.
-        // We can at least cache it locally
+        // iOS: ShareLink covers export; cache locally for offline viewing.
         Task {
             do {
-               let (data, _) = try await URLSession.shared.data(from: url)
-               _ = try? CacheManager.shared.savePDF(data: data, for: paper.id)
+                let data = try await Self.fetchValidatedPDF(from: url)
+                _ = try? CacheManager.shared.savePDF(data: data, for: paper.id)
             } catch {
                 print("Failed to cache PDF: \(error)")
             }
         }
         #endif
     }
-    
+
     /// Determine the toolbar location according to the platform
     private var toolbarPlacement: ToolbarItemPlacement {
         #if os(macOS)

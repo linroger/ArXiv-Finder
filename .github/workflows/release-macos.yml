@@ -109,14 +109,24 @@ jobs:
           "build/ArXiv Finder-${{ steps.get_version.outputs.version }}.dmg" \
           "build/export/ArXiv Finder.app"
           
+    - name: Package app bundle zip
+      run: |
+        cd build/export
+        zip -r "../ArXiv Finder-${{ steps.get_version.outputs.version }}.app.zip" "ArXiv Finder.app"
+        cd ../..
+
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v${{ steps.get_version.outputs.version }}
-        release_name: ArXiv Finder ${{ steps.get_version.outputs.version }}
+        name: ArXiv Finder ${{ steps.get_version.outputs.version }}
+        draft: false
+        prerelease: false
+        files: |
+          build/ArXiv Finder-${{ steps.get_version.outputs.version }}.dmg
+          build/ArXiv Finder-${{ steps.get_version.outputs.version }}.app.zip
         body: |
           ## ArXiv Finder ${{ steps.get_version.outputs.version }}
           
@@ -160,36 +170,6 @@ jobs:
           
           ### Support
           For issues and feature requests, please visit the [GitHub repository](https://github.com/jhg45-ua/Arxiv-Finder).
-        draft: false
-        prerelease: false
-        
-    - name: Upload DMG to Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/ArXiv Finder-${{ steps.get_version.outputs.version }}.dmg
-        asset_name: ArXiv Finder-${{ steps.get_version.outputs.version }}.dmg
-        asset_content_type: application/octet-stream
-        
-    - name: Upload App Bundle to Release
-      run: |
-        # Create a zip file of the app bundle
-        cd build/export
-        zip -r "../ArXiv Finder-${{ steps.get_version.outputs.version }}.app.zip" "ArXiv Finder.app"
-        cd ../..
-        
-    - name: Upload App Bundle ZIP to Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/ArXiv Finder-${{ steps.get_version.outputs.version }}.app.zip
-        asset_name: ArXiv Finder-${{ steps.get_version.outputs.version }}.app.zip
-        asset_content_type: application/zip
-        
     - name: Clean up
       run: |
         rm -rf build/

@@ -276,7 +276,7 @@ final class ArXivController: ObservableObject {
             
         } catch {
             print("❌ Controller: Search error: \(error.localizedDescription)")
-            errorMessage = "Error en la búsqueda: \(error.localizedDescription)"
+            errorMessage = "Search error: \(error.localizedDescription)"
             
             // Asegura que la animación de carga dure al menos 1 segundo incluso en caso de error
             await ensureMinimumLoadingTime(startTime: startTime)
@@ -317,7 +317,7 @@ final class ArXivController: ObservableObject {
             
         } catch {
             print("❌ Controller: Enhanced search error: \(error.localizedDescription)")
-            errorMessage = "Error en búsqueda mejorada: \(error.localizedDescription)"
+            errorMessage = "Enhanced search error: \(error.localizedDescription)"
             
             await ensureMinimumLoadingTime(startTime: startTime)
             isSearching = false
@@ -527,7 +527,7 @@ final class ArXivController: ObservableObject {
     private func showAutoRefreshNotification() {
         let content = UNMutableNotificationContent()
                         content.title = "ArXiv Finder"
-        content.body = "Papers actualizados automáticamente"
+        content.body = "Papers updated automatically"
         content.sound = .default
         
         let request = UNNotificationRequest(
@@ -651,18 +651,18 @@ final class ArXivController: ObservableObject {
                     }
                 }
                 
-                favoritePapers = uniqueFavorites.sorted { $0.favoritedDate ?? Date.distantPast > $1.favoritedDate ?? Date.distantPast }
+                favoritePapers = uniqueFavorites.sorted { ($0.favoritedDate ?? Date.distantPast) > ($1.favoritedDate ?? Date.distantPast) }
                 print("✅ Controller: Loaded \(favoritePapers.count) favorite papers from SwiftData")
                 
             } else {
                 // Fallback: load from memory
                 favoritePapers = getAllPapers().filter { $0.isFavorite }
-                    .sorted { $0.favoritedDate ?? Date.distantPast > $1.favoritedDate ?? Date.distantPast }
+                    .sorted { ($0.favoritedDate ?? Date.distantPast) > ($1.favoritedDate ?? Date.distantPast) }
                 print("✅ Controller: Loaded \(favoritePapers.count) favorite papers from memory")
             }
         } catch {
             print("❌ Controller: Error loading favorites: \(error)")
-            errorMessage = "Error cargando favoritos: \(error.localizedDescription)"
+            errorMessage = "Error loading favorites: \(error.localizedDescription)"
         }
         
         isLoading = false
@@ -677,24 +677,32 @@ final class ArXivController: ObservableObject {
         let newFavoriteState = !paper.isFavorite
         paper.setFavorite(newFavoriteState)
         
-        // Save to SwiftData if available
+        // Persist to SwiftData if available. Insert only when the paper is not already
+        // persisted; otherwise update the existing instance so we never violate the
+        // unique `id` constraint or create duplicates from API-fetched objects.
         if let modelContext = modelContext {
-            // Ensure paper is in SwiftData
-            modelContext.insert(paper)
-            
+            let paperID = paper.id
+            let descriptor = FetchDescriptor<ArXivPaper>(predicate: #Predicate<ArXivPaper> { $0.id == paperID })
             do {
+                if let existing = try modelContext.fetch(descriptor).first {
+                    if existing !== paper {
+                        existing.setFavorite(newFavoriteState)
+                    }
+                } else {
+                    modelContext.insert(paper)
+                }
                 try modelContext.save()
                 print("✅ Controller: Paper favorite status saved to SwiftData")
             } catch {
-                print("❌ Controller: Error saving to SwiftData: \(error)")
+                print("❌ Controller: Error saving favorite to SwiftData: \(error)")
             }
         }
-        
+
         // Update the favorite list
         if newFavoriteState {
             if !favoritePapers.contains(where: { $0.id == paper.id }) {
                 favoritePapers.append(paper)
-                favoritePapers.sort { $0.favoritedDate ?? Date.distantPast > $1.favoritedDate ?? Date.distantPast }
+                favoritePapers.sort { ($0.favoritedDate ?? Date.distantPast) > ($1.favoritedDate ?? Date.distantPast) }
                 print("✅ Controller: Added paper to favorites. Total: \(favoritePapers.count)")
             }
         } else {

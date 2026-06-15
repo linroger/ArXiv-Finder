@@ -154,30 +154,6 @@ struct PapersListView: View {
                 #if os(macOS)
                 .frame(minWidth: 350)
                 #endif
-            } else if controller?.isSearchActive == true && papers.isEmpty {
-                // No search results
-                ContentUnavailableView(
-                    "No search results",
-                    systemImage: "magnifyingglass",
-                    description: Text("No papers found matching your search criteria. Try different keywords or categories.")
-                )
-                .overlay(alignment: .bottom) {
-                    VStack(spacing: 12) {
-                        Button("Try Again") {
-                            // This will be handled by the search view
-                        }
-                        .buttonStyle(.borderedProminent)
-                        
-                        Button("Clear Search") {
-                            controller?.clearSearch()
-                        }
-                        .buttonStyle(.bordered)
-                    }
-                    .padding()
-                }
-                #if os(macOS)
-                .frame(minWidth: 350)
-                #endif
             } else {
                 // List of ArXiv papers
                 #if os(macOS)
@@ -341,14 +317,6 @@ struct PapersListView: View {
                     Label("Update", systemImage: "arrow.clockwise")
                 }
                 .disabled(isLoading)
-                
-                #if os(macOS)
-                Button(action: {
-                    // Action to export or share
-                }) {
-                    Label("Share", systemImage: "square.and.arrow.up")
-                }
-                #endif
             }
         }
     }

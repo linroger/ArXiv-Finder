@@ -260,4 +260,73 @@ struct ArXiv_FinderTests {
         #expect(paper1.id != paper2.id)
         #expect(paper1.title != paper2.title)
     }
+
+    // MARK: - Illustrative Citation Count (deterministic placeholder)
+
+    @Test("Illustrative citation count is deterministic for a given id")
+    func testIllustrativeCitationCountIsDeterministic() throws {
+        let a = ArXivPaper.illustrativeCitationCount(for: "2023.12345v1")
+        let b = ArXivPaper.illustrativeCitationCount(for: "2023.12345v1")
+        #expect(a == b)
+    }
+
+    @Test("Illustrative citation count stays within 0...500")
+    func testIllustrativeCitationCountRange() throws {
+        for id in ["2023.1", "http://arxiv.org/abs/2401.00001v2", "stat.ML/9912345", ""] {
+            let value = ArXivPaper.illustrativeCitationCount(for: id)
+            #expect(value >= 0 && value <= 500)
+        }
+    }
+
+    @Test("Citation count is stable across two fetches of the same paper id")
+    func testCitationCountStableAcrossInstances() throws {
+        let makePaper = {
+            ArXivPaper(
+                id: "2401.99999v1",
+                title: "Stable Citations",
+                summary: "s",
+                authors: "a",
+                publishedDate: Date(),
+                pdfURL: "https://arxiv.org/pdf/2401.99999v1.pdf",
+                linkURL: "https://arxiv.org/abs/2401.99999v1",
+                categories: "cs.AI"
+            )
+        }
+        #expect(makePaper().citationCount == makePaper().citationCount)
+    }
+
+    // MARK: - Favorite semantics
+
+    @Test("setFavorite toggles isFavorite and favoritedDate consistently")
+    func testSetFavoriteSemantics() throws {
+        let paper = ArXivPaper(
+            id: "2401.55555v1",
+            title: "Fav",
+            summary: "s",
+            authors: "a",
+            publishedDate: Date(),
+            pdfURL: "https://arxiv.org/pdf/2401.55555v1.pdf",
+            linkURL: "https://arxiv.org/abs/2401.55555v1",
+            categories: "cs.AI"
+        )
+        #expect(paper.isFavorite == false)
+        #expect(paper.favoritedDate == nil)
+
+        paper.setFavorite(true)
+        #expect(paper.isFavorite == true)
+        #expect(paper.favoritedDate != nil)
+
+        paper.setFavorite(false)
+        #expect(paper.isFavorite == false)
+        #expect(paper.favoritedDate == nil)
+    }
+
+    // MARK: - Category metadata
+
+    @Test("Every ArXivCategory has a unique identifier and matches expected set")
+    func testCategoryIdentifiersUnique() throws {
+        let identifiers = ArXivCategory.allCases.map { $0.identifier }
+        #expect(Set(identifiers).count == identifiers.count)
+        #expect(Set(identifiers) == ["latest", "cs", "math", "physics", "q-bio", "q-fin", "stat", "eess", "econ"])
+    }
 }

@@ -72,11 +72,24 @@ final class ArXivPaper {
         self.pdfURL = pdfURL
         self.linkURL = linkURL
         self.categories = categories
-        self.citationCount = citationCount ?? Int.random(in: 0...500)
+        // arXiv does not expose citation counts. We show a *deterministic* illustrative
+        // value derived from the paper id so the number is stable across fetches and app
+        // launches (sorting by citations no longer reshuffles on every refresh).
+        self.citationCount = citationCount ?? ArXivPaper.illustrativeCitationCount(for: id)
         self.isFavorite = isFavorite
         self.favoritedDate = isFavorite ? Date() : nil
     }
-    
+
+    /// Deterministic, launch-stable placeholder citation count in 0...500 derived from the
+    /// paper id using a djb2 hash (Swift's `hashValue` is per-launch seeded and unsuitable).
+    static func illustrativeCitationCount(for id: String) -> Int {
+        var hash: UInt64 = 5381
+        for byte in id.utf8 {
+            hash = (hash &* 33) &+ UInt64(byte)
+        }
+        return Int(hash % 501)
+    }
+
     /// Marks or unmarks the paper as favorite
     /// - Parameter favorite: true to mark as favorite, false to unmark
     func setFavorite(_ favorite: Bool) {
