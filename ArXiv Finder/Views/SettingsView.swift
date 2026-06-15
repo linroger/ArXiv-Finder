@@ -11,6 +11,16 @@ import UserNotifications
 import AppKit
 #endif
 
+extension Bundle {
+    /// User-facing app version, e.g. "2.0.0 (40)", read from the bundle Info.plist.
+    var appVersionDisplay: String {
+        let short = infoDictionary?["CFBundleShortVersionString"] as? String ?? "—"
+        let build = infoDictionary?["CFBundleVersion"] as? String
+        if let build, build != short { return "\(short) (\(build))" }
+        return short
+    }
+}
+
 /// Simplified settings view for the ArXiv Finder app
 /// Provides essential options with immediate application of changes
 #if os(macOS)
@@ -171,7 +181,7 @@ struct SettingsView: View {
                             HStack {
                                 Text("Version")
                                 Spacer()
-                                Text("1.0.0")
+                                Text(Bundle.main.appVersionDisplay)
                                     .foregroundColor(.secondary)
                             }
                             
@@ -195,7 +205,10 @@ struct SettingsView: View {
             }
         }
         .padding(20)
-        .frame(width: 500, height: 650)
+        .frame(minWidth: 460, idealWidth: 500, maxWidth: 640, minHeight: 560, idealHeight: 650, maxHeight: 820)
+        // Re-configure the auto-refresh timer immediately when these change at runtime.
+        .onChange(of: autoRefresh) { _, _ in postSettingChanged("autoRefresh") }
+        .onChange(of: refreshInterval) { _, _ in postSettingChanged("refreshInterval") }
         .alert("Reset Settings", isPresented: $showingResetAlert) {
             Button("Reset", role: .destructive) {
                 resetSettings()
@@ -249,6 +262,11 @@ struct SettingsView: View {
     
     // MARK: - Helper Methods
     
+    /// Posts a settings-changed notification so the controller can react at runtime.
+    private func postSettingChanged(_ setting: String) {
+        NotificationCenter.default.post(name: .settingsChanged, object: nil, userInfo: ["setting": setting])
+    }
+
     /// Reset all settings to their default values
     private func resetSettings() {
         refreshInterval = 30
@@ -259,12 +277,12 @@ struct SettingsView: View {
         compactMode = false
         showPreview = true
         fontSize = 14.0
-        
-        // Notify changes
-        NotificationCenter.default.post(
-            name: .settingsChanged,
-            object: nil
-        )
+        accentColorName = "Blue"
+        enableCache = true
+        cacheSizeLimit = 100
+
+        // Notify the controller to reconfigure and reload with defaults.
+        NotificationCenter.default.post(name: .settingsReset, object: nil)
     }
 }
 
@@ -461,6 +479,8 @@ struct SettingsView: View {
                 }
             }
         }
+        .onChange(of: autoRefresh) { _, _ in postSettingChanged("autoRefresh") }
+        .onChange(of: refreshInterval) { _, _ in postSettingChanged("refreshInterval") }
         .alert("Connection Result", isPresented: $showingConnectionAlert) {
             Button("OK") { }
         } message: {
@@ -475,9 +495,14 @@ struct SettingsView: View {
             Text("Are you sure you want to reset all settings?")
         }
     }
-    
+
     // MARK: - Helper Methods
-    
+
+    /// Posts a settings-changed notification so the controller can react at runtime.
+    private func postSettingChanged(_ setting: String) {
+        NotificationCenter.default.post(name: .settingsChanged, object: nil, userInfo: ["setting": setting])
+    }
+
     /// Request notification permissions
     private func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
@@ -549,12 +574,12 @@ struct SettingsView: View {
         compactMode = false
         showPreview = true
         fontSize = 14.0
-        
-        // Notify changes
-        NotificationCenter.default.post(
-            name: .settingsChanged,
-            object: nil
-        )
+        accentColorName = "Blue"
+        enableCache = true
+        cacheSizeLimit = 100
+
+        // Notify the controller to reconfigure and reload with defaults.
+        NotificationCenter.default.post(name: .settingsReset, object: nil)
     }
 }
 #endif

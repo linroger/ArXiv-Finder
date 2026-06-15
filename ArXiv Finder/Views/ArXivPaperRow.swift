@@ -42,6 +42,7 @@ struct ArXivPaperRow: View {
                     .font(.system(size: fontSize, weight: .medium))
                     .lineLimit(compactMode ? 2 : 4)
                     .multilineTextAlignment(.leading)
+                    .accessibilityAddTraits(.isHeader)
                 
                 // Article authors (only if not in compact mode)
                 if !compactMode {
@@ -116,6 +117,7 @@ struct ArXivPaperRow: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 .help(paper.isFavorite ? "Remove from favorites" : "Add to favorites")
+                .accessibilityLabel(paper.isFavorite ? "Remove from favorites" : "Add to favorites")
             }
         }
         .padding(.vertical, compactMode ? 12 : 16)

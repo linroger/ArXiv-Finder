@@ -79,7 +79,17 @@ enum ArXivCategory: CaseIterable {
 /// Service responsible for communicating with the ArXiv API using ArxivKit
 /// Provides a clean interface for fetching papers from different categories
 final class ArXivService: @unchecked Sendable {
-    
+
+    /// Shared URLSession configured with sane timeouts so requests fail fast on poor
+    /// networks instead of hanging on the 60s default. Reused for all ArxivKit fetches.
+    static let session: URLSession = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 20
+        configuration.timeoutIntervalForResource = 45
+        configuration.waitsForConnectivity = true
+        return URLSession(configuration: configuration)
+    }()
+
     /// Generic method to fetch papers by category
     /// - Parameters:
     ///   - category: The category to fetch papers from
@@ -96,7 +106,7 @@ final class ArXivService: @unchecked Sendable {
                 .sortingOrder(ArxivRequestSpecification.SortingOrder.descending)
                 .sorted(by: ArxivRequestSpecification.SortingCriterion.lastUpdateDate)
             
-            let response = try await request.fetch(using: URLSession.shared)
+            let response = try await request.fetch(using: ArXivService.session)
             let papers = response.entries.map { convertToArXivPaper(from: $0) }
             
             print("✅ Successfully fetched \(papers.count) \(category.name) papers")
@@ -214,7 +224,7 @@ final class ArXivService: @unchecked Sendable {
                     ArxivRequestSpecification.SortingCriterion.relevance : 
                     ArxivRequestSpecification.SortingCriterion.lastUpdateDate)
             
-            let response = try await request.fetch(using: URLSession.shared)
+            let response = try await request.fetch(using: ArXivService.session)
             
             let papers = response.entries.map { entry in
                 convertToArXivPaper(from: entry)
@@ -248,7 +258,7 @@ final class ArXivService: @unchecked Sendable {
                 .sortingOrder(ArxivRequestSpecification.SortingOrder.descending)
                 .sorted(by: ArxivRequestSpecification.SortingCriterion.relevance)
             
-            let titleResponse = try await titleRequest.fetch(using: URLSession.shared)
+            let titleResponse = try await titleRequest.fetch(using: ArXivService.session)
             allResults.append(contentsOf: titleResponse.entries)
             print("✅ Title search found \(titleResponse.entries.count) results")
             
@@ -260,7 +270,7 @@ final class ArXivService: @unchecked Sendable {
                 .sortingOrder(ArxivRequestSpecification.SortingOrder.descending)
                 .sorted(by: ArxivRequestSpecification.SortingCriterion.relevance)
             
-            let abstractResponse = try await abstractRequest.fetch(using: URLSession.shared)
+            let abstractResponse = try await abstractRequest.fetch(using: ArXivService.session)
             
             // Add unique results from abstract search
             for entry in abstractResponse.entries {
@@ -279,7 +289,7 @@ final class ArXivService: @unchecked Sendable {
                     .sortingOrder(ArxivRequestSpecification.SortingOrder.descending)
                     .sorted(by: ArxivRequestSpecification.SortingCriterion.relevance)
                 
-                let authorsResponse = try await authorsRequest.fetch(using: URLSession.shared)
+                let authorsResponse = try await authorsRequest.fetch(using: ArXivService.session)
                 
                 // Add unique results from authors search
                 for entry in authorsResponse.entries {
@@ -326,7 +336,7 @@ final class ArXivService: @unchecked Sendable {
             pdfURL: entry.pdfURL.absoluteString,
             linkURL: entry.abstractURL.absoluteString,
             categories: categoriesString,
-            citationCount: Int.random(in: 0...500),
+            citationCount: nil, // deterministic placeholder computed from id in ArXivPaper
             isFavorite: false
         )
     }

@@ -102,12 +102,18 @@ struct ArXiv_Finder: App {
                     return newContainer
                 } catch {
                     print("❌ Failed to create new container after recovery: \(error)")
-                    fatalError("Could not create ModelContainer even after recovery attempt: \(error)")
                 }
             }
-            
-            // For other errors, terminate the application
-            fatalError("Could not create ModelContainer: \(error)")
+
+            // Last resort: fall back to an in-memory store so the app still launches
+            // (favorites won't persist this session, but the user is not locked out).
+            print("⚠️ Falling back to an in-memory store for this session.")
+            do {
+                let memoryConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+                return try ModelContainer(for: schema, configurations: [memoryConfiguration])
+            } catch {
+                fatalError("Could not create ModelContainer (including in-memory fallback): \(error)")
+            }
         }
     }()
 
@@ -118,12 +124,12 @@ struct ArXiv_Finder: App {
         // macOS-specific configuration with resizable window
         WindowGroup {
             MainView()
-                .frame(minWidth: 1500, minHeight: 700)
+                .frame(minWidth: 1080, minHeight: 640)
                 .tint(accentColor)
         }
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified)
-        .defaultSize(width: 1500, height: 700)
+        .defaultSize(width: 1320, height: 820)
         // Inject the shared model container into the SwiftUI environment
         // This allows all views to access persistent data
         .modelContainer(sharedModelContainer)

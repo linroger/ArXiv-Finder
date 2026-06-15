@@ -92,7 +92,7 @@ struct MainView: View {
                 PapersListView(
                     papers: controller.filteredPapers,
                     isLoading: controller.isLoading,
-                    errorMessage: .constant(controller.errorMessage),
+                    errorMessage: Binding(get: { controller.errorMessage }, set: { controller.errorMessage = $0 }),
                     controller: controller,
                     loadLatestPapers: { await controller.loadLatestPapers() },
                     selectedPaper: $selectedPaper
@@ -152,7 +152,7 @@ struct MainView: View {
                 PapersListView(
                     papers: controller.filteredPapers,
                     isLoading: controller.isLoading,
-                    errorMessage: .constant(controller.errorMessage),
+                    errorMessage: Binding(get: { controller.errorMessage }, set: { controller.errorMessage = $0 }),
                     controller: controller,
                     loadLatestPapers: { await controller.loadLatestPapers() },
                     categoryLoaders: [
