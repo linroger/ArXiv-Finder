@@ -182,7 +182,8 @@ Severity: **P0** ship-blocker / crash / data-loss · **P1** functional defect ·
 | Sandboxed app loads papers over network | launch signed Release app | ✅ `✅ Successfully fetched 50 Latest papers` (no sandbox denial) |
 | Unit tests pass | `xcodebuild … test` | ✅ all `ArXiv_FinderTests` pass (incl. new citation/favorite/category tests) |
 | UI tests | `xcodebuild … test` | ⏭️ skipped in scheme — require a GUI session + automation auth (fail to *initialize* in headless/CI sandbox); kept skipped to keep the test action green and deterministic |
-| DMG built & verified | `./scripts/build-dmg.sh` + `hdiutil verify` | _pending_ |
+| DMG built & verified | `./scripts/build-dmg.sh` + `hdiutil verify` | ✅ `dist/ArXiv-Finder-2.0.0-macOS.dmg` checksum VALID; payload ad-hoc signed (adhoc,runtime) + sandboxed |
+| Pushed & released | push `v2.0-ship` + `gh release create v2.0.0` | ✅ pushed; release published with DMG asset: github.com/linroger/ArXiv-Finder/releases/tag/v2.0.0 |
 
 ## 5. Update log (append-only)
 - 2026-06-16: Created from 4-agent audit; hand-vetted; false positives recorded; execution order set.
