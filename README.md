@@ -9,7 +9,20 @@
   <img alt="SwiftUI" src="https://img.shields.io/badge/UI-SwiftUI-34C759">
   <img alt="Persistence" src="https://img.shields.io/badge/Data-SwiftData-FF9F0A">
   <img alt="API" src="https://img.shields.io/badge/API-arXiv-5E5CE6">
+  <img alt="Version" src="https://img.shields.io/badge/Version-2.0.0-0A84FF">
 </p>
+
+<p align="center">
+  <strong>English</strong> · <a href="README.zh-Hans.md">简体中文</a>
+</p>
+
+## What's New in 2.0
+
+- **App Sandbox + Hardened Runtime** with the network-client entitlement (distribution-ready security model).
+- **Settings apply instantly** — toggling auto-refresh or changing the interval now takes effect at runtime.
+- **Faster, smoother PDFs** — PDFs load off the main thread (no UI freeze) and are served from an on-disk cache that honors the cache toggle and size limit.
+- **More reliable** — safer favorites persistence, validated PDF downloads (HTTP status + `%PDF` checks), network timeouts, and a graceful fallback if the local store can't open.
+- **Polished UI** — smaller minimum window, English-only strings, accessibility labels, and a resizable Settings window.
 
 ## Overview
 
@@ -153,9 +166,10 @@ ArXiv Finder/
 
 ## Notes and Current Behavior
 
-- Citation counts are currently mock values (arXiv feed does not provide citation counts directly).
-- PDF caching is supported via `CacheManager`; users can clear cache in Settings.
+- Citation counts are a **deterministic illustrative placeholder** derived from the paper id (arXiv does not provide citation counts). The value is stable across refreshes so sorting by citations is consistent.
+- PDF caching is handled by `CacheManager`: it respects the cache toggle and the configured size limit (oldest-first eviction) and can be cleared from Settings.
 - Search uses ArxivKit-backed queries and includes category-aware filtering.
+- The macOS app runs under **App Sandbox**; DMG builds are ad-hoc signed with Hardened Runtime but are **not notarized**, so first launch requires the right-click → Open Gatekeeper step.
 
 ## Testing and Smoke Checks
 
@@ -165,9 +179,12 @@ ArXiv Finder/
 
 # Build
 xcodebuild -project "ArXiv Finder.xcodeproj" -scheme "ArXiv Finder" -destination "platform=macOS" build
+
+# Run unit tests
+xcodebuild -project "ArXiv Finder.xcodeproj" -scheme "ArXiv Finder" -destination "platform=macOS" test
 ```
 
-Note: the currently shared Xcode scheme is not configured with an active `test` action, so `xcodebuild ... test` will return a scheme configuration error until test execution is enabled in the scheme.
+The shared scheme runs the **unit tests** (`ArXiv FinderTests`). The UI tests (`ArXiv FinderUITests`) are intentionally skipped in the scheme because the UI-test runner cannot initialize in headless/CI environments; re-enable them in a desktop session if needed.
 
 ## License
 
