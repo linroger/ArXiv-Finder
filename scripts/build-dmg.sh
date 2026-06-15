@@ -60,8 +60,15 @@ mkdir -p "$DIST_DIR"
 cp -R "$APP_PATH" "$STAGING_DIR/$APP_NAME"
 ln -s /Applications "$STAGING_DIR/Applications"
 
+ENTITLEMENTS="$ROOT_DIR/ArXiv Finder/ArXiv Finder.entitlements"
 if command -v codesign >/dev/null 2>&1; then
-  codesign --force --deep --sign - "$STAGING_DIR/$APP_NAME" >/dev/null 2>&1 || true
+  echo "==> Ad-hoc signing app (App Sandbox + Hardened Runtime)"
+  if [[ -f "$ENTITLEMENTS" ]]; then
+    codesign --force --options runtime --entitlements "$ENTITLEMENTS" --sign - "$STAGING_DIR/$APP_NAME"
+  else
+    codesign --force --options runtime --sign - "$STAGING_DIR/$APP_NAME"
+  fi
+  codesign --verify --verbose=2 "$STAGING_DIR/$APP_NAME"
 fi
 
 echo "==> Creating $DMG_NAME"
@@ -72,6 +79,9 @@ hdiutil create \
   -ov \
   -format UDZO \
   "$DMG_PATH" >/dev/null
+
+echo "==> Verifying DMG"
+hdiutil verify "$DMG_PATH"
 
 DMG_SIZE="$(du -h "$DMG_PATH" | awk '{print $1}')"
 echo "==> DMG ready: $DMG_PATH ($DMG_SIZE)"
