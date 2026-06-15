@@ -1,6 +1,35 @@
 # Handoff.md
 
-**Last Updated (UTC):** 2026-02-11 13:18 UTC  
+**Last Updated (UTC):** 2026-06-16  
+**Status:** In Progress → finalizing v2.0 ship  
+**Current Focus:** Hardening + bug-fix pass complete and verified; committing, pushing `v2.0-ship`, and cutting the 2.0.0 release.
+
+## Session 3 (2026-06-16) — Audit, hardening & v2.0 release
+
+A 4-agent parallel audit (concurrency/data, SwiftUI views, networking/service, project/config) produced
+findings consolidated and hand-vetted in **`EXECPLAN2.md`** (false positives recorded there). Implemented:
+
+- **Crashes/data:** removed force-unwrapped `URL(string: paper.linkURL)!`; `toggleFavorite` now fetch-or-inserts
+  by id (no unique-constraint churn); graceful in-memory `ModelContainer` fallback instead of `fatalError`.
+- **Functional:** Settings now post notifications so auto-refresh/interval changes take effect at runtime;
+  `resetSettings` resets all keys (incl. accent/cache); version reads from the bundle (was hardcoded "1.0.0");
+  removed a dead "No search results" branch and the no-op macOS Share button; real `errorMessage` binding so
+  "Clear error" works; PDF viewer now consults the cache (was write-only) and honors `enableCache`/`cacheSizeLimit`.
+- **Robustness:** `PDFKitView` loads off the main thread (no UI freeze); shared `URLSession` with timeouts;
+  PDF downloads validate HTTP status + `%PDF` magic bytes; `CacheManager` is lock-guarded, sanitizes ids into
+  safe filenames, and enforces an oldest-first size cap; citation count is now a deterministic placeholder.
+- **UX/polish:** min window 1500→1080; English-only strings; accessibility labels; resizable Settings window.
+- **Project/build:** App Sandbox + Hardened Runtime + entitlements (network.client, user-selected r/w) — **verified
+  at runtime** (sandboxed signed app fetched 50 papers); version → 2.0.0; aligned `DEVELOPMENT_TEAM`; pinned app
+  `MACOSX_DEPLOYMENT_TARGET=15.5` (fixes test/module mismatch); un-skipped unit tests + added 5 (17 pass; UI tests
+  remain skipped — they can't initialize headless); hardened `build-dmg.sh`; modernized CI release workflow.
+
+**Verification:** Debug+Release builds clean; `xcodebuild test` green (17 unit tests); DMG built & `hdiutil verify`
+VALID at `dist/ArXiv-Finder-2.0.0-macOS.dmg` (ad-hoc signed, hardened runtime, sandboxed).
+
+---
+
+### Prior session record (Session 2)
 **Status:** Complete  
 **Current Focus:** Session complete; PR is open and ready for review.
 

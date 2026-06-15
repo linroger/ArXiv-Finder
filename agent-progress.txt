@@ -21,3 +21,11 @@ Session 2: Added scripts/build-dmg.sh to produce a macOS Release app and package
 Session 2: Built and verified installer artifact dist/ArXiv-Finder-1.1.2-macOS.dmg (mount check includes ArXiv Finder.app + Applications symlink).
 Session 2: Quality gates run - ./init.sh passed; xcodebuild build passed; xcodebuild test is currently unavailable because scheme test action is not configured.
 Session 2: Branch pushed and PR opened to main: https://github.com/linroger/ArXiv-Finder/pull/3
+Session 3 (2026-06-16): Ran a 4-agent audit (concurrency/data, views, networking, project/config); consolidated + hand-vetted findings in EXECPLAN2.md.
+Session 3: Fixed crashes/data integrity - removed force-unwrapped linkURL; toggleFavorite fetch-or-insert by id; graceful in-memory ModelContainer fallback.
+Session 3: Fixed functional defects - Settings now propagate (auto-refresh/interval react at runtime); full resetSettings; bundle-driven version; real errorMessage binding; removed dead search branch + no-op Share button.
+Session 3: Robustness - async PDFKitView (no UI freeze); cache-first PDF viewing honoring enableCache/cacheSizeLimit; CacheManager lock-guarded + id sanitization + size eviction; URLSession timeouts; PDF status + magic-byte validation; deterministic citation placeholder.
+Session 3: Polish - min window 1500->1080; English strings; accessibility labels; resizable Settings.
+Session 3: Hardening - added App Sandbox + Hardened Runtime + entitlements; VERIFIED at runtime (sandboxed signed app fetched 50 papers). Version -> 2.0.0; aligned DEVELOPMENT_TEAM; pinned app MACOSX_DEPLOYMENT_TARGET=15.5.
+Session 3: Tests - un-skipped + fixed unit test target (deployment mismatch); added 5 tests; 17 unit tests pass via xcodebuild test. UI tests left skipped (cannot initialize in headless env).
+Session 3: Hardened scripts/build-dmg.sh (sign w/ entitlements + runtime, fail on error, hdiutil verify); modernized CI release workflow (softprops/action-gh-release@v2). Built + verified dist/ArXiv-Finder-2.0.0-macOS.dmg.
